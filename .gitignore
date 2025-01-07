@@ -6,4 +6,4 @@ node_modules
 test-ledger
 .yarn
 .env
-subtle-striker-443420-h0-9ec708d80a59.json
+./subtle-striker-443420-h0-9ec708d80a59.json
