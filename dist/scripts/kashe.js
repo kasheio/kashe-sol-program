@@ -50,11 +50,21 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const anchor = __importStar(require("@coral-xyz/anchor"));
 const anchor_1 = require("@coral-xyz/anchor");
+const bytes_1 = require("@coral-xyz/anchor/dist/cjs/utils/bytes");
 const spl_token_1 = require("@solana/spl-token");
 const web3_js_1 = require("@solana/web3.js");
+const spl_token_metadata_1 = require("@solana/spl-token-metadata");
 const mekey_json_1 = __importDefault(require("../tests/keys/mekey.json"));
 const user1_json_1 = __importDefault(require("../tests/keys/user1.json"));
 const user2_json_1 = __importDefault(require("../tests/keys/user2.json"));
+const storage_1 = require("@google-cloud/storage");
+const uuid_1 = require("uuid");
+const bucketName = process.env.BUCKET;
+const storage = new storage_1.Storage({
+    keyFilename: `subtle-striker-443420-h0-9ec708d80a59.json`,
+    projectId: "subtle-striker-443420-h0"
+});
+const bucket = storage.bucket(bucketName);
 let connection;
 let mykey;
 let payer;
@@ -123,14 +133,12 @@ function initialize() {
                 .accounts({
                 globalConfiguration: globalConfiguration,
                 feeAccount: feeAccount,
+                payer: payer.publicKey,
+                systemProgram: web3_js_1.SystemProgram.programId,
             })
                 .signers([payer])
-                .transaction();
-            tx.feePayer = payer.publicKey;
-            tx.recentBlockhash = (yield connection.getLatestBlockhash()).blockhash;
-            console.log(yield connection.simulateTransaction(tx));
-            const sig = yield (0, web3_js_1.sendAndConfirmTransaction)(connection, tx, [payer]);
-            console.log("Initialization transaction signature:", sig);
+                .rpc();
+            console.log("Initialization transaction signature:", tx);
             console.log("Global configuration:", yield program.account.initializeConfiguration.fetch(globalConfiguration));
         }
         catch (error) {
@@ -566,12 +574,25 @@ function addLiquidity() {
 // }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        let anchor_provider_env = anchor.AnchorProvider.env();
-        console.log("anchor_provider_env.wallet.publicKey.toBase58()", anchor_provider_env.wallet.publicKey.toBase58());
-        // console.log("anchor_provider_env.publicKey.toBase58()", anchor_provider_env.publicKey.toBase58());    
-        anchor.setProvider(anchor_provider_env);
+        // let anchor_provider_env = anchor.AnchorProvider.env();
+        // console.log("anchor_provider_env.wallet.publicKey.toBase58()", anchor_provider_env.wallet.publicKey.toBase58());    
+        // // console.log("anchor_provider_env.publicKey.toBase58()", anchor_provider_env.publicKey.toBase58());    
+        // anchor.setProvider(anchor_provider_env);
+        // let anchor_provider = anchor.getProvider();
+        // // console.log("anchor_provider: ", anchor_provider);
+        // connection = anchor_provider.connection;
+        const walletData = JSON.parse(process.env.ANCHOR_WALLET);
+        const keypair = web3_js_1.Keypair.fromSecretKey(new Uint8Array(walletData));
+        const wallet = new anchor.Wallet(keypair);
+        // Create connection using other environment variables
+        let cnx = new anchor.web3.Connection(process.env.ANCHOR_PROVIDER_URL || anchor.web3.clusterApiUrl('devnet'));
+        // Create provider manually
+        const provider = new anchor.AnchorProvider(cnx, wallet, { commitment: 'processed' } // or whatever options you need
+        );
+        // Set the provider
+        anchor.setProvider(provider);
         let anchor_provider = anchor.getProvider();
-        // console.log("anchor_provider: ", anchor_provider);
+        console.log("anchor_provider: ", anchor_provider);
         connection = anchor_provider.connection;
         console.log("Connected to Solana network:", connection.rpcEndpoint);
         mykey = web3_js_1.Keypair.fromSecretKey(new Uint8Array(mekey_json_1.default));
@@ -583,7 +604,7 @@ function main() {
         // await publishIdl();
         // await requestAirdrop();
         // await airdrop(new PublicKey('5fkp8siwumxpGxH2UnrNVCGzwEr7aYn7qqXzkfVKYeaZ'),1);
-        yield initialize();
+        // await initialize();
         // await tokenMint();
         // console.log("mintAddr: ", bs58.encode(mintAddr.secretKey));
         // console.log("userAta: ", userAta.toBase58());
@@ -607,5 +628,249 @@ function main() {
         console.log('done');
     });
 }
-main();
+function tokenMintKashe(name, symbol, uri) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var _a, _b;
+        try {
+            // METADATA START
+            let transaction;
+            let transactionSignature;
+            // Generate new keypair for Mint Account
+            let mintAddr = web3_js_1.Keypair.generate();
+            const mint = mintAddr.publicKey;
+            const decimals = 9;
+            const mintAuthority = payer.publicKey;
+            const updateAuthority = payer.publicKey;
+            const metaData = {
+                mint: mint,
+                name: name,
+                symbol: symbol,
+                uri: uri,
+                additionalMetadata: [["description", "A Kashe Token"]],
+            };
+            const metadataExtension = spl_token_1.TYPE_SIZE + spl_token_1.LENGTH_SIZE;
+            const metadataLen = (0, spl_token_metadata_1.pack)(metaData).length;
+            const mintLen = (0, spl_token_1.getMintLen)([spl_token_1.ExtensionType.MetadataPointer]);
+            const lamports = yield connection.getMinimumBalanceForRentExemption(mintLen + metadataExtension + metadataLen);
+            const createAccountInstruction = web3_js_1.SystemProgram.createAccount({
+                fromPubkey: payer.publicKey,
+                newAccountPubkey: mint,
+                space: mintLen,
+                lamports,
+                programId: spl_token_1.TOKEN_2022_PROGRAM_ID,
+            });
+            const initializeMetadataPointerInstruction = (0, spl_token_1.createInitializeMetadataPointerInstruction)(mint, updateAuthority, mint, spl_token_1.TOKEN_2022_PROGRAM_ID);
+            const initializeMintInstruction = (0, spl_token_1.createInitializeMintInstruction)(mint, decimals, mintAuthority, null, spl_token_1.TOKEN_2022_PROGRAM_ID);
+            const initializeMetadataInstruction = (0, spl_token_metadata_1.createInitializeInstruction)({
+                programId: spl_token_1.TOKEN_2022_PROGRAM_ID,
+                metadata: mint,
+                updateAuthority: updateAuthority,
+                mint: mint,
+                mintAuthority: mintAuthority,
+                name: metaData.name,
+                symbol: metaData.symbol,
+                uri: metaData.uri,
+            });
+            const updateFieldInstruction = (0, spl_token_metadata_1.createUpdateFieldInstruction)({
+                programId: spl_token_1.TOKEN_2022_PROGRAM_ID,
+                metadata: mint,
+                updateAuthority: updateAuthority,
+                field: metaData.additionalMetadata[0][0],
+                value: metaData.additionalMetadata[0][1],
+            });
+            // First transaction: Create and initialize mint
+            transaction = new web3_js_1.Transaction().add(createAccountInstruction, initializeMetadataPointerInstruction, initializeMintInstruction, initializeMetadataInstruction, updateFieldInstruction);
+            transactionSignature = yield (0, web3_js_1.sendAndConfirmTransaction)(connection, transaction, [payer, mintAddr], {
+                commitment: 'confirmed',
+                preflightCommitment: 'confirmed'
+            });
+            console.log("\nCreate Mint Account:", `https://solana.fm/tx/${transactionSignature}?cluster=devnet-solana`);
+            // Wait for mint account initialization
+            // After the first transaction that creates the mint account
+            // Add a more robust confirmation check
+            console.log("Waiting for mint account initialization...");
+            yield new Promise(resolve => setTimeout(resolve, 2000)); // Add delay
+            let mintInfo = null;
+            let retries = 5;
+            while (retries > 0 && mintInfo === null) {
+                try {
+                    mintInfo = yield (0, spl_token_1.getMint)(connection, mintAddr.publicKey, 'confirmed', spl_token_1.TOKEN_2022_PROGRAM_ID);
+                    break;
+                }
+                catch (e) {
+                    console.log(`Waiting for mint account to be available... (${retries} retries left)`);
+                    yield new Promise(resolve => setTimeout(resolve, 1000));
+                    retries--;
+                }
+            }
+            if (!mintInfo) {
+                throw new Error("Failed to initialize mint account");
+            }
+            // Custom logging function to handle BigInt
+            const formatMintInfo = {
+                address: mintInfo.address.toString(),
+                mintAuthority: ((_a = mintInfo.mintAuthority) === null || _a === void 0 ? void 0 : _a.toString()) || null,
+                supply: mintInfo.supply.toString(),
+                decimals: mintInfo.decimals,
+                isInitialized: mintInfo.isInitialized,
+                freezeAuthority: ((_b = mintInfo.freezeAuthority) === null || _b === void 0 ? void 0 : _b.toString()) || null,
+                extensions: mintInfo.extensions
+            };
+            console.log("\nMint Info:", formatMintInfo);
+            const metadataPointer = (0, spl_token_1.getMetadataPointerState)(mintInfo);
+            console.log("\nMetadata Pointer:", JSON.stringify(metadataPointer, null, 2));
+            console.log("Waiting for metadata to be available...");
+            yield new Promise(resolve => setTimeout(resolve, 3000)); // Initial delay
+            let metadata = null;
+            let metadataRetries = 5;
+            while (metadataRetries > 0) {
+                try {
+                    metadata = yield (0, spl_token_1.getTokenMetadata)(connection, mint);
+                    if (metadata) {
+                        console.log("\nMetadata:", JSON.stringify(metadata, null, 2));
+                        break;
+                    }
+                }
+                catch (e) {
+                    console.log(`Waiting for metadata to be available... (${metadataRetries} retries left)`);
+                    yield new Promise(resolve => setTimeout(resolve, 4000));
+                    metadataRetries--;
+                }
+            }
+            if (!metadata) {
+                throw new Error("Failed to retrieve token metadata");
+            }
+            // Create ATA in a separate transaction
+            console.log("Creating Associated Token Account...");
+            let payerTokenAta = yield (0, spl_token_1.getAssociatedTokenAddress)(mint, payer.publicKey, false, spl_token_1.TOKEN_2022_PROGRAM_ID, spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID);
+            const createAtaInstruction = (0, spl_token_1.createAssociatedTokenAccountInstruction)(payer.publicKey, payerTokenAta, payer.publicKey, mint, spl_token_1.TOKEN_2022_PROGRAM_ID, spl_token_1.ASSOCIATED_TOKEN_PROGRAM_ID);
+            const ataTransaction = new web3_js_1.Transaction().add(createAtaInstruction);
+            const ataSignature = yield (0, web3_js_1.sendAndConfirmTransaction)(connection, ataTransaction, [payer], {
+                commitment: 'confirmed',
+                preflightCommitment: 'confirmed'
+            });
+            console.log("ATA created:", ataSignature);
+            // Wait for ATA creation to be confirmed
+            yield connection.confirmTransaction(ataSignature, 'confirmed');
+            // Mint tokens in a separate transaction
+            const amount = BigInt('1000000000000000000'); // 1 billion tokens when decimals = 9
+            const mintToInstruction = (0, spl_token_1.createMintToInstruction)(mint, payerTokenAta, mintAuthority, amount, [], spl_token_1.TOKEN_2022_PROGRAM_ID);
+            // Prevent further minting
+            const setAuthorityInstruction = (0, spl_token_1.createSetAuthorityInstruction)(mint, mintAuthority, spl_token_1.AuthorityType.MintTokens, null, [], spl_token_1.TOKEN_2022_PROGRAM_ID);
+            const mintTransaction = new web3_js_1.Transaction().add(mintToInstruction, setAuthorityInstruction);
+            const mintSignature = yield (0, web3_js_1.sendAndConfirmTransaction)(connection, mintTransaction, [payer], {
+                commitment: 'confirmed',
+                preflightCommitment: 'confirmed'
+            });
+            // const setAuthorityTransaction = new Transaction().add(setAuthorityInstruction);
+            // const setAuthoritySignature = await sendAndConfirmTransaction(
+            //   connection,
+            //   setAuthorityTransaction,
+            //   [payer],
+            //   {
+            //     commitment: 'confirmed',
+            //     preflightCommitment: 'confirmed'
+            //   }
+            // );
+            console.log("Mint successful:", mintSignature);
+            return mintAddr;
+        }
+        catch (error) {
+            console.error("Error in tokenMint:", error);
+            throw error;
+        }
+    });
+}
+function createAndUploadTokenMetadata(metadataJSON) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // const tokenMetadataJson = {
+            //     "name": metadataJSON.name,
+            //     "symbol": metadataJSON.symbol,
+            //     "description": metadataJSON.description || "ACustom Kashe Token",
+            //     "image": metadataJSON.imgUrl,
+            //     "external_url": "https://kashe.io",
+            //     "attributes": [
+            //         {
+            //             "trait_type": "Category",
+            //             "value": "Cryptocurrency"
+            //         }
+            //     ]
+            // };
+            const tokenMetadataJsonBuffer = Buffer.from(JSON.stringify(metadataJSON));
+            const filename_metadata = (0, uuid_1.v4)() + '.json';
+            const metadata_file = bucket.file(filename_metadata);
+            yield metadata_file.save(tokenMetadataJsonBuffer, { metadata: { contentType: 'application/json' } });
+            const metadataURI = 'https://media.kashe.io/' + filename_metadata;
+            return { success: true, metadataURI };
+        }
+        catch (error) {
+            return { success: false, error };
+        }
+    });
+}
+function createAndMintToken(metadataJSON, metadataURI) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // Create Solana Token and Mint 1B and Create Bonding Curve Pool And Add Liquidity
+            // Get the wallet data from environment variable and convert it to Keypair
+            const walletData = JSON.parse(process.env.ANCHOR_WALLET);
+            const keypair = web3_js_1.Keypair.fromSecretKey(new Uint8Array(walletData));
+            const wallet = new anchor.Wallet(keypair);
+            // Create connection using other environment variables
+            let cnx = new anchor.web3.Connection(process.env.ANCHOR_PROVIDER_URL || anchor.web3.clusterApiUrl('devnet'));
+            // Create provider manually
+            const provider = new anchor.AnchorProvider(cnx, wallet, { commitment: 'processed' } // or whatever options you need
+            );
+            // Set the provider
+            anchor.setProvider(provider);
+            let anchor_provider = anchor.getProvider();
+            console.log("anchor_provider: ", anchor_provider);
+            connection = anchor_provider.connection;
+            payer = web3_js_1.Keypair.fromSecretKey(new Uint8Array(bytes_1.bs58.decode(process.env.PAYER_KEY)));
+            console.log("payer publicKey: ", payer.publicKey.toBase58());
+            feeAccount = web3_js_1.Keypair.fromSecretKey(new Uint8Array(user2_json_1.default));
+            console.log("feeAccount publicKey: ", feeAccount.publicKey.toBase58());
+            console.log("Connected to Solana network:", connection.rpcEndpoint);
+            program = anchor.workspace.Token2022Kashe;
+            const mintAddr = yield tokenMintKashe(metadataJSON.name, metadataJSON.symbol, metadataURI);
+            const ft_contract_addr = mintAddr.publicKey.toString();
+            console.log("mintAddr: ", ft_contract_addr);
+            return { success: true, ft_contract_addr };
+        }
+        catch (error) {
+            return { success: false, error };
+        }
+    });
+}
+function createKasheKoin() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const metadataJSON = {
+            "name": "Kashe Koin",
+            "symbol": "KASHE",
+            "description": "The Koin Of Kashe",
+            "image": "https://media.kashe.io/KasheKoinLogo.png",
+            "external_url": "https://kashe.io",
+            "attributes": [
+                {
+                    "trait_type": "Category",
+                    "value": "Cryptocurrency"
+                }
+            ]
+        };
+        // UPLOAD TOKEN METADATA JSON
+        const metadataUpload = yield createAndUploadTokenMetadata(metadataJSON);
+        if (!metadataUpload.success)
+            return { success: false, error: { message: 'Error Uploading Metadata', type: 'Query', code: 6000, trace_id: '56525345543' } };
+        const metadataURI = metadataUpload.metadataURI;
+        // MINT TOKEN
+        const mintResult = yield createAndMintToken(metadataJSON, metadataURI);
+        if (!mintResult.success)
+            return { success: false, error: { message: 'Error Minting Token', type: 'Query', code: 6000, trace_id: '6235666244' } };
+        const ft_contract_addr = mintResult.ft_contract_addr;
+        console.log("ft_contract_addr: ", ft_contract_addr);
+    });
+}
+// main();
+createKasheKoin();
 //# sourceMappingURL=kashe.js.map

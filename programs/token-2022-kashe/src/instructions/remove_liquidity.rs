@@ -1,8 +1,7 @@
 
 
 use anchor_lang::{
-    prelude::*,
-    solana_program::{self, system_instruction},
+    prelude::*
 };
 
 use anchor_spl::{
@@ -68,7 +67,7 @@ pub struct RemoveLiquidity<'info> {
 }
 
 impl<'info> RemoveLiquidity<'info> {
-    pub fn process(&mut self , sol_bump : u8) -> Result<()> {
+    pub fn process(&mut self) -> Result<()> {
        // TODO implement remove liquidity
 
         Ok(())

@@ -1,7 +1,6 @@
 use anchor_lang::{
     prelude::*,
-    solana_program::system_instruction::{self, transfer},
-    
+    solana_program::system_instruction::{self},
 };
 use anchor_spl::{
     associated_token::AssociatedToken,
@@ -68,6 +67,22 @@ pub struct CreatePool<'info> {
 
 impl<'info> CreatePool<'info> {
     pub fn process(&mut self, fee_lamports: u64) -> Result<()> {
+        let transfer_instruction = system_instruction::transfer(
+            &self.payer.to_account_info().key(),
+            &self.fee_account.to_account_info().key(),
+            fee_lamports,
+        );
+
+        anchor_lang::solana_program::program::invoke_signed(
+            &transfer_instruction,
+            &[
+                self.payer.to_account_info(),
+                self.fee_account.clone(),
+                self.system_program.to_account_info(),
+            ],
+            &[],
+        )?;
+        
         self.bonding_curve.init()?;
 
         Ok(())

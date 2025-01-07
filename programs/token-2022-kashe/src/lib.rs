@@ -9,7 +9,7 @@ pub mod utils;
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("8jDR5qcFspA1kydVnLRpSguWgWTg7rGBrGfovoKg7c7N");
+declare_id!("37oqxteswoX2RzvAPmaujpUd3U4GNuigT8FGrQ5HHVPt");
 
 #[program]
 pub mod token_2022_kashe {
@@ -46,7 +46,7 @@ pub mod token_2022_kashe {
 
     /// Initiazlize a swap pool
     pub fn remove_liquidity(ctx: Context<RemoveLiquidity>) -> Result<()> {
-        ctx.accounts.process(ctx.bumps.sol_pool)?;
+        ctx.accounts.process()?;
         Ok(())
     }
 }

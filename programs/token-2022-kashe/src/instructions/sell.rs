@@ -1,4 +1,4 @@
-use std::ops::{Div, Mul};
+use std::ops::{Div};
 
 use anchor_lang::{
     prelude::*,
@@ -9,7 +9,6 @@ use anchor_spl::{
 };
 
 use crate::{    
-    events::BondingCurveCompleted,
     states::{BondingCurve, InitializeConfiguration},
     utils::calc_swap_quote,
 };

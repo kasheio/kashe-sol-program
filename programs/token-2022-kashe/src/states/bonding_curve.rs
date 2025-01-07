@@ -15,7 +15,9 @@ impl BondingCurve {
     pub fn init(
         &mut self
     ) -> Result<()> {
+        self.real_token_reserves = 0;
         self.real_sol_reserves = 0;
+        self.complete = false;
         Ok(())
     }
 }

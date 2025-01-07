@@ -320,3 +320,5 @@ Waiting for the debugger to disconnect...
 53 333 333 333 333 336
     53 333 333 333 333
  1 000 000 000 000 000TESTAGAIN
+
+ "Error: Account does not exist or has no data EtnyhUNYNS3J1iH4YC6DytwV93XYhErQNJpdqxEmGiTH\n    at AccountClient.fetch (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/.pnpm/@coral-xyz+anchor@0.30.1_bufferutil@4.0.8_utf-8-validate@5.0.10/node_modules/@coral-xyz/anchor/dist/cjs/program/namespace/account.js:110:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
