@@ -872,5 +872,5 @@ function createKasheKoin() {
     });
 }
 // main();
-createKasheKoin();
+// createKasheKoin();
 //# sourceMappingURL=kashe.js.map

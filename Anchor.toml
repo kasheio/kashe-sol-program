@@ -9,10 +9,10 @@ skip-lint = false
 token_2022_kashe = "37oqxteswoX2RzvAPmaujpUd3U4GNuigT8FGrQ5HHVPt"
 
 [registry]
-url = "https://api.apr.dev"
+url = "https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c"
 
 [provider]
-cluster = "Devnet"
+cluster = "Mainnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

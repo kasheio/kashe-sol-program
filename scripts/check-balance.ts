@@ -30,4 +30,8 @@ async function checkBalances() {
     // console.log("  feeAccount secret key (Base58):", bs58.encode(feeAccount.secretKey));
 }
 
+// const privateKeyUint8 = bs58.decode('');
+// console.log(privateKeyUint8);
+// const keypair = Keypair.fromSecretKey(privateKeyUint8);
+
 checkBalances().catch(console.error);
