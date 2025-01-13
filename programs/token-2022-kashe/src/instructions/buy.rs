@@ -11,11 +11,15 @@ use anchor_spl::{
 
 
 use crate::{
-    
-    events::BondingCurveCompleted,
+    events::{BondingCurveCompleted, BondingCurveBought},
     states::{BondingCurve, InitializeConfiguration},
     utils::calc_swap_quote,
 };
+use crate::error::ErrorCode;
+use anchor_lang::error::Error;
+use anchor_lang::prelude::*;
+
+const BPS_DECIMALS: u64 = 10000;
 
 #[derive(Accounts)]
 #[instruction(in_amount: u64)]
@@ -87,17 +91,20 @@ impl<'info> Buy<'info> {
             true,
         );
 
-        msg!(
-            "Buy in_amount {}  => {} ",
-            in_amount.clone(),
-            estimated_out_token.clone()
-        );
+        let fees = in_amount
+            .checked_mul(self.global_configuration.swap_fee as u64)
+            .ok_or(ErrorCode::MathOverflow)?
+            .checked_div(BPS_DECIMALS)
+            .ok_or(ErrorCode::MathOverflow)?;
+
+        let pool_amount = in_amount
+            .checked_sub(fees)
+            .ok_or(ErrorCode::MathOverflow)?;
 
         let transfer_instruction = system_instruction::transfer(
             &self.payer.to_account_info().key(),
             &self.sol_pool.key().clone(),
-            (in_amount as f32 * (100.0 - self.global_configuration.swap_fee.clone()) / 100.0)
-                as u64,
+            pool_amount,
         );
 
         anchor_lang::solana_program::program::invoke(
@@ -112,7 +119,7 @@ impl<'info> Buy<'info> {
         let transfer_instruction_fee = system_instruction::transfer(
             &self.payer.to_account_info().key(),
             &self.fee_account.to_account_info().key(),
-            (in_amount as f32 * (self.global_configuration.swap_fee.clone()) / 100.0) as u64,
+            fees,
         );
 
         anchor_lang::solana_program::program::invoke(
@@ -124,11 +131,6 @@ impl<'info> Buy<'info> {
             ],
         )?;
 
-        msg!(
-            " token balance : {} , {}",
-            self.token_pool.amount,
-            estimated_out_token.clone()
-        );
 
         transfer_checked(
             CpiContext::new_with_signer(
@@ -149,27 +151,29 @@ impl<'info> Buy<'info> {
             self.mint_addr.decimals,
         )?;
 
-        msg!(
-            "Buy Token {} sol => {} token ",
-            in_amount.clone().div(LAMPORTS_PER_SOL),
-            estimated_out_token.div(10_u64.pow(self.mint_addr.decimals as u32))
-        );
-
-        self.bonding_curve.real_sol_reserves += in_amount;
+        self.bonding_curve.real_sol_reserves += pool_amount;
         self.bonding_curve.real_token_reserves -= estimated_out_token;
-
-        msg!(
-            "{} , {}",
-            self.bonding_curve.real_sol_reserves,
-            self.global_configuration.bonding_curve_limitation
-        );
+    
+        emit!(BondingCurveBought {
+            mint_addr: self.mint_addr.key(),
+            buyer: self.payer.key(),
+            sol_amount: in_amount,
+            token_amount: estimated_out_token,
+            sol_reserves: self.bonding_curve.real_sol_reserves,
+            token_reserves: self.bonding_curve.real_token_reserves,
+            fees_paid: fees,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
 
         if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation
         {
             self.bonding_curve.complete = true;
             emit!(BondingCurveCompleted {
-                mint_addr: self.mint_addr.key()
-            })
+                mint_addr: self.mint_addr.key(),
+                final_sol_reserves: self.bonding_curve.real_sol_reserves,
+                final_token_reserves: self.bonding_curve.real_token_reserves,
+                timestamp: Clock::get()?.unix_timestamp,
+            });
         }
 
         Ok(())

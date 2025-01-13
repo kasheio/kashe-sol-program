@@ -8,8 +8,10 @@ use anchor_spl::{
     token_2022::Token2022
 };
 
-use crate::
-    states::{BondingCurve, InitializeConfiguration};
+use crate::{
+    events::PoolCreated,
+    states::{BondingCurve, InitializeConfiguration},
+};
 
 #[derive(Accounts)]
 #[instruction(fee_lamports: u64)]
@@ -85,6 +87,13 @@ impl<'info> CreatePool<'info> {
         
         self.bonding_curve.init()?;
 
+        emit!(PoolCreated {
+            mint_addr: self.mint_addr.key(),
+            sol_pool: self.sol_pool.key(),
+            token_pool: self.token_pool.key(),
+            timestamp: Clock::get()?.unix_timestamp,
+        });
+        
         Ok(())
     }
 }

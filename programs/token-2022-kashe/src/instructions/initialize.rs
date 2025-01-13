@@ -6,13 +6,13 @@ use crate::{
 };
 
 #[derive(Accounts)]
-#[instruction(params : InitializeConfigurationParam)]
+#[instruction(param: InitializeConfigurationParam)]
 pub struct Initialize<'info> {
     #[account(
-        init,
-        seeds = [ InitializeConfiguration::SEEDS ],
+        init_if_needed,  // This will initialize if it doesn't exist, or just load if it does
         payer = payer,
-        space = 8 + 48,
+        space = InitializeConfiguration::SIZE + 8,
+        seeds = [InitializeConfiguration::SEEDS],
         bump
     )]
     pub global_configuration: Account<'info, InitializeConfiguration>,
@@ -33,7 +33,7 @@ impl<'info> Initialize<'info> {
 
         msg!("Initializing with parameters:");
         msg!("Bonding Curve Limitation: {}", bonding_curve_limitation);
-        msg!("Bonding Curve Slope: {}", bonding_curve_slope);
+        msg!("Bonding Curve Slope: {}", bonding_curve_slope);  
         msg!("Bonding Swap Fee: {}", swap_fee);
         msg!("Setting global configuration values...");
         self.global_configuration.set_value(param)?;

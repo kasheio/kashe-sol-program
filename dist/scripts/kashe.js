@@ -121,25 +121,49 @@ function initialize() {
                 console.log("Global configuration already initialized");
                 return;
             }
-            ;
             const initializeArgu = {
-                swapFee: 2.0,
+                swapFee: new anchor_1.BN(200),
                 bondingCurveLimitation: new anchor_1.BN(8 * web3_js_1.LAMPORTS_PER_SOL),
                 bondingCurveSlope: new anchor_1.BN(190 * 1000000)
             };
-            // Add your test here.
-            const tx = yield program.methods
+            // Build the transaction
+            const txn = yield program.methods
                 .initialize(initializeArgu)
-                .accounts({
-                globalConfiguration: globalConfiguration,
-                feeAccount: feeAccount,
+                .accountsStrict({
+                globalConfiguration,
+                feeAccount,
                 payer: payer.publicKey,
-                systemProgram: web3_js_1.SystemProgram.programId,
+                systemProgram: anchor.web3.SystemProgram.programId,
             })
                 .signers([payer])
-                .rpc();
-            console.log("Initialization transaction signature:", tx);
-            console.log("Global configuration:", yield program.account.initializeConfiguration.fetch(globalConfiguration));
+                .rpc({
+                commitment: 'confirmed',
+                preflightCommitment: 'confirmed'
+            });
+            console.log("Initialization transaction signature:", txn);
+            // Wait for transaction confirmation
+            console.log("Waiting for transaction confirmation...");
+            yield connection.confirmTransaction(txn, 'confirmed');
+            // Add a small delay to ensure account is fully processed
+            yield new Promise(resolve => setTimeout(resolve, 2000));
+            // Fetch account with retries
+            let configAccount = null;
+            let retries = 5;
+            while (retries > 0 && configAccount === null) {
+                try {
+                    configAccount = yield program.account.initializeConfiguration.fetch(globalConfiguration, 'confirmed');
+                    console.log("Global configuration:", configAccount);
+                    break;
+                }
+                catch (error) {
+                    console.log(`Retrying account fetch... (${retries} attempts remaining)`);
+                    yield new Promise(resolve => setTimeout(resolve, 1000));
+                    retries--;
+                }
+                if (retries === 0) {
+                    throw new Error("Failed to fetch account after multiple attempts");
+                }
+            }
         }
         catch (error) {
             if (error instanceof anchor.web3.SendTransactionError) {
@@ -604,7 +628,7 @@ function main() {
         // await publishIdl();
         // await requestAirdrop();
         // await airdrop(new PublicKey('5fkp8siwumxpGxH2UnrNVCGzwEr7aYn7qqXzkfVKYeaZ'),1);
-        // await initialize();
+        yield initialize();
         // await tokenMint();
         // console.log("mintAddr: ", bs58.encode(mintAddr.secretKey));
         // console.log("userAta: ", userAta.toBase58());
@@ -871,6 +895,6 @@ function createKasheKoin() {
         console.log("ft_contract_addr: ", ft_contract_addr);
     });
 }
-// main();
+main();
 // createKasheKoin();
 //# sourceMappingURL=kashe.js.map

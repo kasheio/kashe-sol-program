@@ -16,7 +16,6 @@ const web3_js_1 = require("@solana/web3.js");
 const mekey_json_1 = __importDefault(require("../tests/keys/mekey.json"));
 const user1_json_1 = __importDefault(require("../tests/keys/user1.json"));
 const user2_json_1 = __importDefault(require("../tests/keys/user2.json"));
-const bytes_1 = require("@coral-xyz/anchor/dist/cjs/utils/bytes");
 function checkBalances() {
     return __awaiter(this, void 0, void 0, function* () {
         const connection = new web3_js_1.Connection("https://api.devnet.solana.com", "confirmed");
@@ -39,10 +38,8 @@ function checkBalances() {
         // console.log("  feeAccount secret key (Base58):", bs58.encode(feeAccount.secretKey));
     });
 }
-// Convert to Uint8Array
-const privateKeyUint8 = bytes_1.bs58.decode('3BwRZyaNE3WCQXxoeKX5KJCz5q6nTCicfNXwQkMQtwjVZqwdjmvDDmMpENyKk4BW2bxn37WFvNxY4kKP5KyWvB8p');
-console.log(privateKeyUint8);
-// Now you can create the keypair
-const keypair = web3_js_1.Keypair.fromSecretKey(privateKeyUint8);
+// const privateKeyUint8 = bs58.decode('');
+// console.log(privateKeyUint8);
+// const keypair = Keypair.fromSecretKey(privateKeyUint8);
 checkBalances().catch(console.error);
 //# sourceMappingURL=check-balance.js.map

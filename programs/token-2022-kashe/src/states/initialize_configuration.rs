@@ -4,7 +4,7 @@ use crate::InitializeConfigurationParam;
 
 #[account]
 pub struct InitializeConfiguration {
-    pub swap_fee : f32,                                       //  swap percentage
+    pub swap_fee : u64,                                       //  swap basis points
     pub bonding_curve_limitation : u64,                       //  bonding curve limitation
     pub bonding_curve_slope : u64,                            //  bonding curve slope    
 }

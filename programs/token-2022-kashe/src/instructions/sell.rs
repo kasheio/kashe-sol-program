@@ -9,9 +9,16 @@ use anchor_spl::{
 };
 
 use crate::{    
+    events::{BondingCurveSold},
     states::{BondingCurve, InitializeConfiguration},
     utils::calc_swap_quote,
 };
+
+use crate::error::ErrorCode;
+use anchor_lang::error::Error;
+use anchor_lang::prelude::*;
+
+const BPS_DECIMALS: u64 = 10000;
 
 #[derive(Accounts)]
 #[instruction(in_amount: u64)]
@@ -96,20 +103,21 @@ impl<'info> Sell<'info> {
             self.mint_addr.decimals,
         )?;
 
-        msg!(
-            "Sell Token {} token => {} sol ",
-            in_amount,
-            estimated_out_token
-        );
+        let fees = estimated_out_token
+            .checked_mul(self.global_configuration.swap_fee as u64)
+            .ok_or(ErrorCode::MathOverflow)?
+            .checked_div(BPS_DECIMALS)
+            .ok_or(ErrorCode::MathOverflow)?;
 
+        let sol_out = estimated_out_token
+            .checked_sub(fees)
+            .ok_or(ErrorCode::MathOverflow)?;
+            
         let transfer_instruction = system_instruction::transfer(
             &self.sol_pool.to_account_info().key(),
             &self.payer.to_account_info().key(),
-            (estimated_out_token as f32 * (100.0 - self.global_configuration.swap_fee.clone())
-                / 100.0) as u64,
+            fees,
         );
-
-        msg!("Balance : {}", self.sol_pool.lamports());
 
         anchor_lang::solana_program::program::invoke_signed(
             &transfer_instruction,
@@ -127,8 +135,7 @@ impl<'info> Sell<'info> {
         let transfer_instruction_fee = system_instruction::transfer(
             &self.sol_pool.to_account_info().key(),
             &self.fee_account.to_account_info().key(),
-            (estimated_out_token as f32 * (self.global_configuration.swap_fee.clone()) / 100.0)
-                as u64,
+            sol_out,
         );
 
         anchor_lang::solana_program::program::invoke_signed(
@@ -145,14 +152,19 @@ impl<'info> Sell<'info> {
             ]],
         )?;
 
-        msg!(
-            " token balance : {} , {}",
-            self.token_pool.amount,
-            estimated_out_token
-        );
-
-        self.bonding_curve.real_sol_reserves -= estimated_out_token.div(LAMPORTS_PER_SOL as u64);
+        self.bonding_curve.real_sol_reserves -= sol_out;
         self.bonding_curve.real_token_reserves += in_amount;
+
+        emit!(BondingCurveSold {
+            mint_addr: self.mint_addr.key(),
+            seller: self.payer.key(),
+            token_amount: in_amount,
+            sol_amount: sol_out,
+            sol_reserves: self.bonding_curve.real_sol_reserves,
+            token_reserves: self.bonding_curve.real_token_reserves,
+            fees_paid: fees,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
 
         Ok(())
     }

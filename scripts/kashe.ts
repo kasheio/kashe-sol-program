@@ -104,56 +104,84 @@ async function requestAirdrop(): Promise<void> {
         throw error;
     }
 }
+
 async function initialize() {
-    try {
-        const [globalConfiguration] = PublicKey.findProgramAddressSync(
-            [Buffer.from("global_config")],
-            program.programId
-        );
-        const [feeAccount] = PublicKey.findProgramAddressSync(
-            [Buffer.from("kashe_fee")],
-            program.programId
-        );
+  try {
+      const [globalConfiguration] = PublicKey.findProgramAddressSync(
+          [Buffer.from("global_config")],
+          program.programId
+      );
+      const [feeAccount] = PublicKey.findProgramAddressSync(
+          [Buffer.from("kashe_fee")],
+          program.programId
+      );
 
-        // Check if the account already exists
-        const accountInfo = await connection.getAccountInfo(globalConfiguration);
-        if (accountInfo !== null) {
-            console.log("Global configuration already initialized");
-            return;
-        };
+      // Check if the account already exists
+      const accountInfo = await connection.getAccountInfo(globalConfiguration);
+      if (accountInfo !== null) {
+          console.log("Global configuration already initialized");
+          return;
+      }
 
-        const initializeArgu = {
-            swapFee: 2.0,
-            bondingCurveLimitation: new BN(8 * LAMPORTS_PER_SOL),
-            bondingCurveSlope: new BN(190 * 1000000)
-        };
+      const initializeArgu = {
+          swapFee: new BN(200),
+          bondingCurveLimitation: new BN(8 * LAMPORTS_PER_SOL),
+          bondingCurveSlope: new BN(190 * 1000000)
+      };
 
-        // Add your test here.
-        const tx = await program.methods
+      // Build the transaction
+      const txn = await program.methods
           .initialize(initializeArgu)
-          .accounts({
-            globalConfiguration: globalConfiguration,
-            feeAccount: feeAccount,
-            payer: payer.publicKey,
-            systemProgram: SystemProgram.programId,
-          } as any)
+          .accountsStrict({
+              globalConfiguration,
+              feeAccount,
+              payer: payer.publicKey,
+              systemProgram: anchor.web3.SystemProgram.programId,
+          })
           .signers([payer])
-          .rpc();
+          .rpc({ 
+              commitment: 'confirmed',
+              preflightCommitment: 'confirmed'
+          });
 
-        console.log("Initialization transaction signature:", tx);
+      console.log("Initialization transaction signature:", txn);
 
-        console.log(
-            "Global configuration:",
-            await program.account.initializeConfiguration.fetch(globalConfiguration)
-        );
-    } catch (error) {
-        if (error instanceof anchor.web3.SendTransactionError) {
-            console.error("Transaction failed:", error.logs);
-        } else {
-            console.error("Error initializing:", error);
-        }
-        throw error;
-    }
+      // Wait for transaction confirmation
+      console.log("Waiting for transaction confirmation...");
+      await connection.confirmTransaction(txn, 'confirmed');
+
+      // Add a small delay to ensure account is fully processed
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      // Fetch account with retries
+      let configAccount = null;
+      let retries = 5;
+      while (retries > 0 && configAccount === null) {
+          try {
+              configAccount = await program.account.initializeConfiguration.fetch(
+                  globalConfiguration,
+                  'confirmed'
+              );
+              console.log("Global configuration:", configAccount);
+              break;
+          } catch (error) {
+              console.log(`Retrying account fetch... (${retries} attempts remaining)`);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              retries--;
+          }
+          if (retries === 0) {
+              throw new Error("Failed to fetch account after multiple attempts");
+          }
+      }
+
+  } catch (error) {
+      if (error instanceof anchor.web3.SendTransactionError) {
+          console.error("Transaction failed:", error.logs);
+      } else {
+          console.error("Error initializing:", error);
+      }
+      throw error;
+  }
 }
 
 async function tokenMint() {
@@ -735,7 +763,7 @@ async function main() {
 
     // await airdrop(new PublicKey('5fkp8siwumxpGxH2UnrNVCGzwEr7aYn7qqXzkfVKYeaZ'),1);
 
-    // await initialize();
+    await initialize();
    
     // await tokenMint();
     // console.log("mintAddr: ", bs58.encode(mintAddr.secretKey));
@@ -1124,5 +1152,5 @@ async function createKasheKoin(){
     console.log("ft_contract_addr: ", ft_contract_addr);
 }
 
-// main();
+main();
 // createKasheKoin();

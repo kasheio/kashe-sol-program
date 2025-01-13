@@ -5,11 +5,14 @@ pub mod events;
 pub mod instructions;
 pub mod states;
 pub mod utils;
+pub mod error;
+
+use crate::error::ErrorCode;
 
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("37oqxteswoX2RzvAPmaujpUd3U4GNuigT8FGrQ5HHVPt");
+declare_id!("BWcX4ghsUAZTEbUNLuyiu95pFjpgzUABWJXLfSikfN7p");
 
 #[program]
 pub mod token_2022_kashe {
@@ -41,12 +44,6 @@ pub mod token_2022_kashe {
 
     pub fn sell(ctx: Context<Sell>, in_amount: u64) -> Result<()> {
         ctx.accounts.process(in_amount, ctx.bumps.sol_pool)?;
-        Ok(())
-    }
-
-    /// Initiazlize a swap pool
-    pub fn remove_liquidity(ctx: Context<RemoveLiquidity>) -> Result<()> {
-        ctx.accounts.process()?;
         Ok(())
     }
 }

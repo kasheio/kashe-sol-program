@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_spl::{ token_interface::{Mint, TokenAccount, TransferChecked, transfer_checked},
     token_2022::Token2022};
 
+use crate::events::LiquidityAdded;  // Change from states to events
 use crate::states::{BondingCurve, InitializeConfiguration};
 
 #[derive(Accounts)]
@@ -74,12 +75,15 @@ impl<'info> AddLiquidity<'info> {
             self.mint_addr.decimals,
         )?;
 
-        msg!(
-            "Add liquidity {} token ",
-            token_amount
-        );
-
         self.bonding_curve.real_token_reserves += token_amount;
+       
+        emit!(LiquidityAdded {
+            mint_addr: self.mint_addr.key(),
+            provider: self.user_ata.to_account_info().key(),
+            token_amount,
+            new_token_reserves: self.bonding_curve.real_token_reserves,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
 
         Ok(())
     }
