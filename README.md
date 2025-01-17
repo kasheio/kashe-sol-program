@@ -37,8 +37,9 @@ RUSTUP_TOOLCHAIN="nightly-2024-11-19" anchor deploy
 
 
 To deploy:
+anchor clean
 anchor build
-anchor keys list to get the program id
+anchor keys list (to get the program id)
 change declare_id in lib.rs
 anchor deploy
 Run kashe script with initialize

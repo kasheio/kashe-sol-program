@@ -84,8 +84,8 @@ impl<'info> Sell<'info> {
 
         let estimated_out_token = calc_swap_quote(
             in_amount,
-            self.bonding_curve.real_sol_reserves.div(1_000_000_000),
-            self.global_configuration.bonding_curve_slope,
+            self.bonding_curve.real_sol_reserves,
+            self.bonding_curve.real_token_reserves,
             false,
         );
 
