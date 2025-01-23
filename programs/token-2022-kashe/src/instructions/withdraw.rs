@@ -51,6 +51,11 @@ impl<'info> WithdrawFromBondingCurve<'info> {
     pub fn process(&mut self, bump: u8) -> Result<()> {
         require!(self.bonding_curve.complete, ErrorCode::BondingCurveNotComplete);
 
+        msg!("Withdraw: {}, {}", 
+            self.bonding_curve.real_token_reserves,
+            self.bonding_curve.real_sol_reserves
+        );
+
         // Transfer all SOL
         let transfer_instruction = system_instruction::transfer(
             &self.sol_pool.key(),

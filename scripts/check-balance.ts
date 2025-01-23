@@ -16,6 +16,7 @@ async function checkBalances() {
     const feeAccountBalance = await connection.getBalance(feeAccount.publicKey);
 
     console.log("MyKey wallet (user1):");
+    // console.log("  Secret Key:", bs58.encode(mykey.secretKey));
     console.log("  Address:", mykey.publicKey.toBase58());
     console.log("  Balance:", mykeyBalance / LAMPORTS_PER_SOL, "SOL");
     

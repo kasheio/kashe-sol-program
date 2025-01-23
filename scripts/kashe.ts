@@ -125,7 +125,7 @@ async function initialize() {
 
       const initializeArgu = {
           swapFee: new BN(200),
-          bondingCurveLimitation: new BN(8 * LAMPORTS_PER_SOL),
+          bondingCurveLimitation: new BN(2 * LAMPORTS_PER_SOL),
           bondingCurveSlope: new BN(190 * 1000000)
       };
 
