@@ -1,5 +1,8 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::system_instruction;
 use anchor_spl::{token_2022::Token2022, token_interface::{Mint, TokenAccount, transfer_checked, TransferChecked}};
+use crate::states::BondingCurve;
+use crate::error::ErrorCode;
 
 #[derive(Accounts)]
 pub struct WithdrawFromBondingCurve<'info> {
@@ -46,7 +49,7 @@ pub struct WithdrawFromBondingCurve<'info> {
 
 impl<'info> WithdrawFromBondingCurve<'info> {
     pub fn process(&mut self, bump: u8) -> Result<()> {
-        require!(self.bonding_curve.complete, ProgramError::InvalidAccountData);
+        require!(self.bonding_curve.complete, ErrorCode::BondingCurveNotComplete);
 
         // Transfer all SOL
         let transfer_instruction = system_instruction::transfer(

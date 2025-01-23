@@ -11,9 +11,8 @@ use crate::error::ErrorCode;
 
 use crate::consts::*;
 use crate::instructions::*;
-use crate::instructions::WithdrawFromBondingCurve;
 
-declare_id!("5dcEaUeegR9ynkDaoGrd8QCcvBdxbW1JBvhRoHVMKKFc");
+declare_id!("7vzCaeRXLYPayXqzMcVYp88DzwwJdN4GhodAEpvqUuzd");
 
 #[program]
 pub mod token_2022_kashe {
