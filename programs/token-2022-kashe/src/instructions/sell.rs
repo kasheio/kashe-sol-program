@@ -102,6 +102,11 @@ impl<'info> Sell<'info> {
             in_amount,
             self.mint_addr.decimals,
         )?;
+        msg!(
+            "Sell Token {} token => {} sol ",
+            in_amount,
+            estimated_out_token
+        );
 
         let fees = estimated_out_token
             .checked_mul(self.global_configuration.swap_fee as u64)
@@ -109,14 +114,24 @@ impl<'info> Sell<'info> {
             .checked_div(BPS_DECIMALS)
             .ok_or(ErrorCode::MathOverflow)?;
 
+        msg!(
+            "Sell Token fees {} sol ",
+            fees
+        );
+
         let sol_out = estimated_out_token
             .checked_sub(fees)
             .ok_or(ErrorCode::MathOverflow)?;
             
+        msg!(
+            "Sell Token sol_out {} sol ",
+            sol_out
+        );
+        
         let transfer_instruction = system_instruction::transfer(
             &self.sol_pool.to_account_info().key(),
             &self.payer.to_account_info().key(),
-            fees,
+            sol_out,
         );
 
         anchor_lang::solana_program::program::invoke_signed(
@@ -135,7 +150,7 @@ impl<'info> Sell<'info> {
         let transfer_instruction_fee = system_instruction::transfer(
             &self.sol_pool.to_account_info().key(),
             &self.fee_account.to_account_info().key(),
-            sol_out,
+            fees,
         );
 
         anchor_lang::solana_program::program::invoke_signed(
@@ -152,7 +167,7 @@ impl<'info> Sell<'info> {
             ]],
         )?;
 
-        self.bonding_curve.real_sol_reserves -= sol_out;
+        self.bonding_curve.real_sol_reserves -= estimated_out_token;
         self.bonding_curve.real_token_reserves += in_amount;
 
         emit!(BondingCurveSold {

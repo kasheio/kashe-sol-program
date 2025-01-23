@@ -6,9 +6,8 @@ use anchor_lang::{
 };
 
 use anchor_spl::{
-     token_2022:: Token2022, token_interface::{Mint, TokenAccount,transfer_checked,TransferChecked}
+     token_2022::Token2022, token_interface::{Mint, TokenAccount, transfer_checked, TransferChecked}
 };
-
 
 use crate::{
     events::{BondingCurveCompleted, BondingCurveBought},
@@ -22,7 +21,7 @@ use anchor_lang::prelude::*;
 const BPS_DECIMALS: u64 = 10000;
 
 #[derive(Accounts)]
-#[instruction(in_amount: u64)]
+#[instruction(purchase_amount: u64, total_amount: u64)]
 pub struct Buy<'info> {
     #[account(
         mut,
@@ -41,7 +40,7 @@ pub struct Buy<'info> {
     #[account(mut)]
     pub mint_addr: InterfaceAccount<'info, Mint>,
 
-     #[account(
+    #[account(
         mut,
         associated_token::mint = mint_addr,
         associated_token::authority = payer,
@@ -76,35 +75,42 @@ pub struct Buy<'info> {
     
     pub token_program: Program<'info, Token2022>,
     pub system_program: Program<'info, System>,
-
-    
 }
 
 impl<'info> Buy<'info> {
-    pub fn process(&mut self, in_amount: u64, bump: u8) -> Result<()> {
+    pub fn process(&mut self, purchase_amount: u64, total_amount: u64, bump: u8) -> Result<()> {
         require_eq!(self.bonding_curve.complete, false);
+        
+        // Verify total_amount is sufficient
+        require!(
+            total_amount >= purchase_amount,
+            ErrorCode::InsufficientFunds
+        );
 
+        // Calculate tokens based on purchase_amount only
         let estimated_out_token = calc_swap_quote(
-            in_amount,
+            purchase_amount,
             self.bonding_curve.real_sol_reserves,
             self.bonding_curve.real_token_reserves,
             true,
         );
 
-        let fees = in_amount
+        // Calculate fees based on purchase_amount
+        let fees = purchase_amount
             .checked_mul(self.global_configuration.swap_fee as u64)
             .ok_or(ErrorCode::MathOverflow)?
             .checked_div(BPS_DECIMALS)
             .ok_or(ErrorCode::MathOverflow)?;
 
-        let pool_amount = in_amount
+        let pool_amount = purchase_amount
             .checked_sub(fees)
             .ok_or(ErrorCode::MathOverflow)?;
 
+        // Transfer the total amount to cover both purchase and rent
         let transfer_instruction = system_instruction::transfer(
             &self.payer.to_account_info().key(),
             &self.sol_pool.key().clone(),
-            pool_amount,
+            total_amount.checked_sub(fees).ok_or(ErrorCode::MathOverflow)?,
         );
 
         anchor_lang::solana_program::program::invoke(
@@ -116,6 +122,7 @@ impl<'info> Buy<'info> {
             ],
         )?;
 
+        // Transfer fees
         let transfer_instruction_fee = system_instruction::transfer(
             &self.payer.to_account_info().key(),
             &self.fee_account.to_account_info().key(),
@@ -131,7 +138,7 @@ impl<'info> Buy<'info> {
             ],
         )?;
 
-
+        // Transfer tokens
         transfer_checked(
             CpiContext::new_with_signer(
                 self.token_program.to_account_info(),
@@ -143,21 +150,22 @@ impl<'info> Buy<'info> {
                 },
                 &[&[
                     b"sol_pool",
-                    &self.mint_addr.key().to_bytes(), // Mint address seed
-                    &[bump], // Constant seed
+                    &self.mint_addr.key().to_bytes(),
+                    &[bump],
                 ]],
             ),
             estimated_out_token,
             self.mint_addr.decimals,
         )?;
 
+        // Update reserves based on purchase_amount only
         self.bonding_curve.real_sol_reserves += pool_amount;
         self.bonding_curve.real_token_reserves -= estimated_out_token;
     
         emit!(BondingCurveBought {
             mint_addr: self.mint_addr.key(),
             buyer: self.payer.key(),
-            sol_amount: in_amount,
+            sol_amount: purchase_amount, // Use purchase_amount for event
             token_amount: estimated_out_token,
             sol_reserves: self.bonding_curve.real_sol_reserves,
             token_reserves: self.bonding_curve.real_token_reserves,

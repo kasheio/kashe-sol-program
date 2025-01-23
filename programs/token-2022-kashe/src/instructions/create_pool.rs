@@ -85,7 +85,7 @@ impl<'info> CreatePool<'info> {
             &[],
         )?;
         
-        self.bonding_curve.init()?;
+        self.bonding_curve.init(self.payer.key())?;
 
         emit!(PoolCreated {
             mint_addr: self.mint_addr.key(),

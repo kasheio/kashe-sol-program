@@ -11,12 +11,12 @@ use crate::error::ErrorCode;
 
 use crate::consts::*;
 use crate::instructions::*;
+use crate::instructions::WithdrawFromBondingCurve;
 
-declare_id!("2mQHntDJk85TbLitFtRGpp7jDNEAo5gnswgv7EKEU9ZF");
+declare_id!("5dcEaUeegR9ynkDaoGrd8QCcvBdxbW1JBvhRoHVMKKFc");
 
 #[program]
 pub mod token_2022_kashe {
-
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, param: InitializeConfigurationParam) -> Result<()> {
@@ -37,13 +37,22 @@ pub mod token_2022_kashe {
         Ok(())
     }
 
-    pub fn buy(ctx: Context<Buy>, in_amount: u64) -> Result<()> {
-        ctx.accounts.process(in_amount, ctx.bumps.sol_pool)?;
+    pub fn buy(
+        ctx: Context<Buy>, 
+        purchase_amount: u64,
+        total_amount: u64
+    ) -> Result<()> {
+        ctx.accounts.process(purchase_amount, total_amount, ctx.bumps.sol_pool)?;
         Ok(())
     }
 
     pub fn sell(ctx: Context<Sell>, in_amount: u64) -> Result<()> {
         ctx.accounts.process(in_amount, ctx.bumps.sol_pool)?;
+        Ok(())
+    }
+
+    pub fn withdraw(ctx: Context<WithdrawFromBondingCurve>) -> Result<()> {
+        ctx.accounts.process(ctx.bumps.sol_pool)?;
         Ok(())
     }
 }
