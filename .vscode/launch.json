@@ -46,6 +46,51 @@
             "internalConsoleOptions": "openOnSessionStart",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
+        },{
+            "type": "node",
+            "request": "launch",
+            "name": "Bonding Curve Info",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/bonding-curve-info.ts",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Raydium Tester",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/raydium-tester.ts",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
         },
         {
             "type": "node",
