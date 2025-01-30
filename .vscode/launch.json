@@ -4,7 +4,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Kashe",
+            "name": "Kashe Stage",
             "skipFiles": [
                 "<node_internals>/**",
                 "${workspaceFolder}/node_modules/**"
@@ -12,7 +12,30 @@
             "runtimeArgs": [
                 "--nolazy"
             ],
-            "program": "${workspaceFolder}/scripts/kashe.ts",
+            "program": "${workspaceFolder}/scripts/kashe-stage.ts",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Kashe Prod",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/kashe-prod.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "sourceMaps": true,
@@ -58,6 +81,29 @@
                 "--nolazy"
             ],
             "program": "${workspaceFolder}/scripts/bonding-curve-info.ts",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Raydium Pool Info",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/raydium-info.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "preLaunchTask": "tsc: build - tsconfig.json",
             "sourceMaps": true,
