@@ -78,7 +78,7 @@ pub struct Buy<'info> {
 }
 
 impl<'info> Buy<'info> {
-    pub fn process(&mut self, purchase_amount: u64, total_amount: u64, bump: u8) -> Result<bool> {
+    pub fn process(&mut self, purchase_amount: u64, total_amount: u64, bump: u8) -> Result<()> {
         require_eq!(self.bonding_curve.complete, false);
         
         // Verify total_amount is sufficient
@@ -161,7 +161,18 @@ impl<'info> Buy<'info> {
         // Update reserves based on purchase_amount only
         self.bonding_curve.real_sol_reserves += pool_amount;
         self.bonding_curve.real_token_reserves -= estimated_out_token;
-    
+
+        if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation
+        {
+            self.bonding_curve.complete = true;
+            emit!(BondingCurveCompleted {
+                mint_addr: self.mint_addr.key(),
+                final_sol_reserves: self.bonding_curve.real_sol_reserves,
+                final_token_reserves: self.bonding_curve.real_token_reserves,
+                timestamp: Clock::get()?.unix_timestamp,
+            });
+        }
+
         emit!(BondingCurveBought {
             mint_addr: self.mint_addr.key(),
             buyer: self.payer.key(),
@@ -171,21 +182,9 @@ impl<'info> Buy<'info> {
             token_reserves: self.bonding_curve.real_token_reserves,
             fees_paid: fees,
             timestamp: Clock::get()?.unix_timestamp,
+            complete: self.bonding_curve.complete,
         });
 
-        let curve_completed = if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation {
-            self.bonding_curve.complete = true;
-            emit!(BondingCurveCompleted {
-                mint_addr: self.mint_addr.key(),
-                final_sol_reserves: self.bonding_curve.real_sol_reserves,
-                final_token_reserves: self.bonding_curve.real_token_reserves,
-                timestamp: Clock::get()?.unix_timestamp,
-            });
-            true
-        } else {
-            false
-        };
-
-        Ok(curve_completed)
+        Ok(())
     }
 }

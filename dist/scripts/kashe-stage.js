@@ -111,8 +111,7 @@
 //       const initializeArgu = {
 //           swapFee: new BN(200),
 //           bondingCurveLimitation: new BN(2 * LAMPORTS_PER_SOL),
-//           bondingCurveSlope: new BN(190 * 1000000),
-//           authority: walletkey.publicKey
+//           bondingCurveSlope: new BN(190 * 1000000)
 //       };
 //       // Build the transaction
 //       const txn = await program.methods

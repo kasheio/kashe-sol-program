@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-token_2022_kashe = "AVVWNz5mJsw87Ph9Zirn6eij5Uj19KtjsYQdocddP3zc"
+token_2022_kashe = "4eY8bwuTXjwJio3uoqH3df7ycWyk3quqZBUYTt3xezgB"
 
 [registry]
 url = "https://api.apr.dev"

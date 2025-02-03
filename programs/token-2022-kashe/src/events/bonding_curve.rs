@@ -10,6 +10,7 @@ pub struct BondingCurveBought {
     pub token_reserves: u64,
     pub fees_paid: u64,
     pub timestamp: i64,
+    pub complete: bool,
 }
 
 #[event]
