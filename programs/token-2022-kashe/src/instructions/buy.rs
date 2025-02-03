@@ -78,7 +78,7 @@ pub struct Buy<'info> {
 }
 
 impl<'info> Buy<'info> {
-    pub fn process(&mut self, purchase_amount: u64, total_amount: u64, bump: u8) -> Result<()> {
+    pub fn process(&mut self, purchase_amount: u64, total_amount: u64, bump: u8) -> Result<bool> {
         require_eq!(self.bonding_curve.complete, false);
         
         // Verify total_amount is sufficient
@@ -173,8 +173,7 @@ impl<'info> Buy<'info> {
             timestamp: Clock::get()?.unix_timestamp,
         });
 
-        if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation
-        {
+        let curve_completed = if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation {
             self.bonding_curve.complete = true;
             emit!(BondingCurveCompleted {
                 mint_addr: self.mint_addr.key(),
@@ -182,8 +181,11 @@ impl<'info> Buy<'info> {
                 final_token_reserves: self.bonding_curve.real_token_reserves,
                 timestamp: Clock::get()?.unix_timestamp,
             });
-        }
+            true
+        } else {
+            false
+        };
 
-        Ok(())
+        Ok(curve_completed)
     }
 }

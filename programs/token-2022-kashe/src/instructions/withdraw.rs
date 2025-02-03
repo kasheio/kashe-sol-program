@@ -50,6 +50,7 @@ pub struct WithdrawFromBondingCurve<'info> {
 impl<'info> WithdrawFromBondingCurve<'info> {
     pub fn process(&mut self, bump: u8) -> Result<()> {
         require!(self.bonding_curve.complete, ErrorCode::BondingCurveNotComplete);
+        require!(self.receiver.key() == self.bonding_curve.creator, ErrorCode::UnauthorizedWithdraw);
 
         msg!("Withdraw: {}, {}", 
             self.bonding_curve.real_token_reserves,

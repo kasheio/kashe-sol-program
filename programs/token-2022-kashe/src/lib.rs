@@ -12,7 +12,7 @@ use crate::error::ErrorCode;
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("EVZLxMn7tK4rDikHVbWVAWVsF379CMFZjRbrRpeaVarX");
+declare_id!("2oTVxfdjAwd722FGQcZJK6Ds8zZEPkyMvokbXHTms6sK");
 
 #[program]
 pub mod token_2022_kashe {
@@ -36,13 +36,8 @@ pub mod token_2022_kashe {
         Ok(())
     }
 
-    pub fn buy(
-        ctx: Context<Buy>, 
-        purchase_amount: u64,
-        total_amount: u64
-    ) -> Result<()> {
-        ctx.accounts.process(purchase_amount, total_amount, ctx.bumps.sol_pool)?;
-        Ok(())
+    pub fn buy(ctx: Context<Buy>, purchase_amount: u64, total_amount: u64) -> Result<bool> {
+        ctx.accounts.process(purchase_amount, total_amount, ctx.bumps.sol_pool)
     }
 
     pub fn sell(ctx: Context<Sell>, in_amount: u64) -> Result<()> {

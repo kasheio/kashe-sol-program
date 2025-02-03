@@ -6,7 +6,8 @@ use crate::InitializeConfigurationParam;
 pub struct InitializeConfiguration {
     pub swap_fee : u64,                                       //  swap basis points
     pub bonding_curve_limitation : u64,                       //  bonding curve limitation
-    pub bonding_curve_slope : u64,                            //  bonding curve slope    
+    pub bonding_curve_slope : u64,                            //  bonding curve slope   
+    pub authority: Pubkey,   
 }
 
 impl InitializeConfiguration {
@@ -18,6 +19,7 @@ impl InitializeConfiguration {
         self.bonding_curve_limitation =  param.bonding_curve_limitation;
         self.bonding_curve_slope =  param.bonding_curve_slope;
         self.swap_fee =  param.swap_fee;
+        self.authority =  param.authority;
 
         Ok(())
     }
