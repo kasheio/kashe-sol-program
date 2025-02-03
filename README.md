@@ -46,3 +46,15 @@ Run kashe script with initialize
 
 
 (5) ['Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [1]', 'Program log: Instruction: SyncNative', 'Program log: Error: IncorrectProgramId', 'Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 531 of 200000 compute units', 'Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction']
+
+  Address: CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error initializing: AnchorError: AnchorError caused by account: global_configuration. Error Code: AccountDidNotDeserialize. Error Number: 3003. Error Message: Failed to deserialize the account.
+    at AnchorError.parse (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/error.js:139:20)
+    at translateError (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/error.js:225:37)
+    at MethodsBuilder.rpc [as _rpcFn] (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/program/namespace/rpc.js:18:53)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {errorLogs: Array(1), logs: Array(7), error: {…}, _programErrorStack: ProgramErrorStack, stack: 'Error: AnchorError caused by account: global_…ons (node:internal/process/task_queues:105:5)', …}
+Uncaught AnchorError AnchorError: AnchorError caused by account: global_configuration. Error Code: AccountDidNotDeserialize. Error Number: 3003. Error Message: Failed to deserialize the account.
+    at parse (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/error.js:139:20)
+    at translateError (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/error.js:225:37)
+    at rpc (/Users/gp/CascadeProjects/kashe-sol-program/node_modules/@coral-xyz/anchor/dist/cjs/program/namespace/rpc.js:18:53)
+    at processTicksAndRejections (<node_internals>/internal/process/task_queues:105:5)

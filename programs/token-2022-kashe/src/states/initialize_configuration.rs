@@ -11,7 +11,7 @@ pub struct InitializeConfiguration {
 }
 
 impl InitializeConfiguration {
-    pub const SIZE: usize = 48;  // Size of the struct
+    pub const SIZE: usize = 64;  // Size of the struct
     pub const SEEDS: &'static [u8] = b"global_config";  // Size of the struct
 
     pub fn set_value (&mut self , param : InitializeConfigurationParam) -> Result<()> {
