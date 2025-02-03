@@ -12,7 +12,7 @@ use crate::error::ErrorCode;
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("A9BHYphh55zKXSPVNuGrPJXyswUc5Sw4GeeJbXaDFo22");
+declare_id!("EVZLxMn7tK4rDikHVbWVAWVsF379CMFZjRbrRpeaVarX");
 
 #[program]
 pub mod token_2022_kashe {
@@ -23,8 +23,8 @@ pub mod token_2022_kashe {
         Ok(())
     }
 
-    pub fn create_pool(ctx: Context<CreatePool>, fee_lamports: u64) -> Result<()> {
-        ctx.accounts.process(fee_lamports)?;
+    pub fn create_pool(ctx: Context<CreatePool>) -> Result<()> {
+        ctx.accounts.process()?;
         Ok(())
     }
 
@@ -52,6 +52,11 @@ pub mod token_2022_kashe {
 
     pub fn withdraw(ctx: Context<WithdrawFromBondingCurve>) -> Result<()> {
         ctx.accounts.process(ctx.bumps.sol_pool)?;
+        Ok(())
+    }
+
+    pub fn withdraw_fees(ctx: Context<WithdrawFees>) -> Result<()> {
+        ctx.accounts.process(ctx.bumps.fee_account)?;
         Ok(())
     }
 }

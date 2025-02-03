@@ -16,16 +16,23 @@ const web3_js_1 = require("@solana/web3.js");
 const mekey_json_1 = __importDefault(require("../tests/keys/mekey.json"));
 const user1_json_1 = __importDefault(require("../tests/keys/user1.json"));
 const user2_json_1 = __importDefault(require("../tests/keys/user2.json"));
+// import { bs58 } from "@coral-xyz/anchor/dist/cjs/utils/bytes";
 function checkBalances() {
     return __awaiter(this, void 0, void 0, function* () {
         const connection = new web3_js_1.Connection("https://api.devnet.solana.com", "confirmed");
+        const idKey = web3_js_1.Keypair.fromSecretKey(new Uint8Array([109, 119, 128, 121, 165, 100, 12, 228, 105, 55, 176, 157, 122, 212, 52, 206, 85, 232, 60, 59, 217, 192, 27, 139, 213, 120, 148, 23, 203, 107, 140, 249, 170, 78, 108, 109, 55, 20, 56, 91, 99, 155, 22, 9, 75, 44, 198, 221, 113, 73, 176, 210, 134, 204, 224, 84, 94, 139, 191, 64, 51, 95, 125, 197]));
         const mykey = web3_js_1.Keypair.fromSecretKey(new Uint8Array(mekey_json_1.default));
         const payer = web3_js_1.Keypair.fromSecretKey(new Uint8Array(user1_json_1.default));
         const feeAccount = web3_js_1.Keypair.fromSecretKey(new Uint8Array(user2_json_1.default));
+        const idKeyBalance = yield connection.getBalance(idKey.publicKey);
         const mykeyBalance = yield connection.getBalance(mykey.publicKey);
         const payerBalance = yield connection.getBalance(payer.publicKey);
         const feeAccountBalance = yield connection.getBalance(feeAccount.publicKey);
-        console.log("MyKey wallet (user1):");
+        console.log("Id wallet (mykey):");
+        // console.log("  Secret Key:", bs58.encode(mykey.secretKey));
+        console.log("  Address:", idKey.publicKey.toBase58());
+        console.log("  Balance:", idKeyBalance / web3_js_1.LAMPORTS_PER_SOL, "SOL");
+        console.log("MyKey wallet (mykey):");
         // console.log("  Secret Key:", bs58.encode(mykey.secretKey));
         console.log("  Address:", mykey.publicKey.toBase58());
         console.log("  Balance:", mykeyBalance / web3_js_1.LAMPORTS_PER_SOL, "SOL");

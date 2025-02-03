@@ -43,3 +43,6 @@ anchor keys list (to get the program id)
 change declare_id in lib.rs
 anchor deploy
 Run kashe script with initialize
+
+
+(5) ['Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb invoke [1]', 'Program log: Instruction: SyncNative', 'Program log: Error: IncorrectProgramId', 'Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb consumed 531 of 200000 compute units', 'Program TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb failed: incorrect program id for instruction']

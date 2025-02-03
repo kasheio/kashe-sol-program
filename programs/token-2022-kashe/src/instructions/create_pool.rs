@@ -14,7 +14,6 @@ use crate::{
 };
 
 #[derive(Accounts)]
-#[instruction(fee_lamports: u64)]
 pub struct CreatePool<'info> {
     #[account(
         mut,
@@ -56,9 +55,6 @@ pub struct CreatePool<'info> {
         associated_token::authority = sol_pool
     )]
     pub token_pool: Box<InterfaceAccount<'info, TokenAccount>>,
-    /// CHECK:
-    #[account(mut)]
-    pub fee_account: AccountInfo<'info>,
     
     #[account(mut)]
     pub payer: Signer<'info>,
@@ -68,23 +64,7 @@ pub struct CreatePool<'info> {
 }
 
 impl<'info> CreatePool<'info> {
-    pub fn process(&mut self, fee_lamports: u64) -> Result<()> {
-        let transfer_instruction = system_instruction::transfer(
-            &self.payer.to_account_info().key(),
-            &self.fee_account.to_account_info().key(),
-            fee_lamports,
-        );
-
-        anchor_lang::solana_program::program::invoke_signed(
-            &transfer_instruction,
-            &[
-                self.payer.to_account_info(),
-                self.fee_account.clone(),
-                self.system_program.to_account_info(),
-            ],
-            &[],
-        )?;
-        
+    pub fn process(&mut self) -> Result<()> {
         self.bonding_curve.init(self.payer.key())?;
 
         emit!(PoolCreated {

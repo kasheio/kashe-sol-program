@@ -1,0 +1,45 @@
+use anchor_lang::{
+    prelude::*,
+    solana_program::system_instruction,
+};
+
+#[derive(Accounts)]
+pub struct WithdrawFees<'info> {
+    /// CHECK: This is the fee account PDA that collects protocol fees
+    #[account(
+        mut,
+        seeds = [b"kashe_fee"],
+        bump,
+    )]
+    pub fee_account: AccountInfo<'info>,
+
+    #[account(mut)]
+    pub receiver: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+impl<'info> WithdrawFees<'info> {
+    pub fn process(&mut self, bump: u8) -> Result<()> {
+        let transfer_instruction = system_instruction::transfer(
+            &self.fee_account.to_account_info().key(),
+            &self.receiver.to_account_info().key(),
+            self.fee_account.lamports(),
+        );
+
+        anchor_lang::solana_program::program::invoke_signed(
+            &transfer_instruction,
+            &[
+                self.fee_account.to_account_info(),
+                self.receiver.to_account_info(),
+                self.system_program.to_account_info(),
+            ],
+            &[&[
+                b"kashe_fee",
+                &[bump],
+            ]],
+        )?;
+
+        Ok(())
+    }
+}

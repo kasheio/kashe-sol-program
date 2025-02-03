@@ -86,7 +86,7 @@ function getClmmPoolInfo(poolId) {
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const poolId = 'AxtSXRF5kMvbbWhQR7dKWLqN4QSMX6hCqhceDQJC9t1J';
+            const poolId = 'HKvu2XDzFu1VSJQvNTcoXgw2hmV77iGZavY31NWFTWU1';
             const poolInfo = yield getClmmPoolInfo(poolId);
             console.log('Pool Information:', JSON.stringify(poolInfo, null, 2));
         }

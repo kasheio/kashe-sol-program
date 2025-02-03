@@ -4,7 +4,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Kashe Stage",
+            "name": "Initialize Kashe Stage",
             "skipFiles": [
                 "<node_internals>/**",
                 "${workspaceFolder}/node_modules/**"
@@ -27,7 +27,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Kashe Prod",
+            "name": "Initialize Kashe Prod",
             "skipFiles": [
                 "<node_internals>/**",
                 "${workspaceFolder}/node_modules/**"
@@ -141,6 +141,38 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Raydium Create Pool",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/raydium-create-pool.ts",
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js",
+                "/Users/gp/CascadeProjects/raydium-sdk-V2/lib/**/*.js"
+            ],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "webpack:///./*": "${workspaceFolder}/*",
+                "webpack:///src/*": "${workspaceFolder}/src/*",
+                "webpack:///@raydium-io/raydium-sdk-v2/*": "/Users/gp/CascadeProjects/raydium-sdk-V2/*"
+            },
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**",
+                "/Users/gp/CascadeProjects/raydium-sdk-V2/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "GPTest",
             "skipFiles": [
                 "<node_internals>/**",
@@ -160,6 +192,29 @@
             "internalConsoleOptions": "openOnSessionStart",
             "console": "integratedTerminal",
             "cwd": "${workspaceFolder}"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Withdraw Fees",
+            "skipFiles": [
+                "<node_internals>/**",
+                "${workspaceFolder}/node_modules/**"
+            ],
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "program": "${workspaceFolder}/scripts/withdraw-fees.ts",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }

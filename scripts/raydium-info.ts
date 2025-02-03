@@ -88,7 +88,7 @@ async function getClmmPoolInfo(poolId) {
 // Example usage
 async function main() {
     try {
-        const poolId = 'AxtSXRF5kMvbbWhQR7dKWLqN4QSMX6hCqhceDQJC9t1J';
+        const poolId = 'HKvu2XDzFu1VSJQvNTcoXgw2hmV77iGZavY31NWFTWU1';
         
         const poolInfo = await getClmmPoolInfo(poolId);
         console.log('Pool Information:', JSON.stringify(poolInfo, null, 2));

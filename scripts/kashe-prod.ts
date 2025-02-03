@@ -1,10 +1,8 @@
 import * as dotenv from "dotenv";
-dotenv.config();
-
 import * as anchor from "@coral-xyz/anchor";
 import { BN, Program } from "@coral-xyz/anchor";
 import { Token2022Kashe } from "../target/types/token_2022_kashe";
-
+dotenv.config();
 
 import {
   Connection,
@@ -13,26 +11,11 @@ import {
   PublicKey,
 } from "@solana/web3.js";
 
+import walletInfo from "/Users/gp/.config/solana/id.json";
 
-import mekey from "../tests/keys/mekey.json";
-import key1 from "../tests/keys/user1.json";
-import key2 from "../tests/keys/user2.json";
-import { Storage } from '@google-cloud/storage';
-
-const bucketName = process.env.BUCKET;
-const storage = new Storage({
-  keyFilename: `subtle-striker-443420-h0-9ec708d80a59.json`,
-  projectId:"subtle-striker-443420-h0"
-});
-const bucket = storage.bucket(bucketName);
-
-let connection: Connection;
-let mykey: Keypair;
-let payer: Keypair;
-let feeAccount: Keypair;
 let program: Program<Token2022Kashe>;
 
-async function initialize() {
+async function initialize(connection: Connection, walletkey: Keypair) {
   try {
       const [globalConfiguration] = PublicKey.findProgramAddressSync(
           [Buffer.from("global_config")],
@@ -52,7 +35,7 @@ async function initialize() {
 
       const initializeArgu = {
           swapFee: new BN(200),
-          bondingCurveLimitation: new BN(60 * LAMPORTS_PER_SOL),
+          bondingCurveLimitation: new BN(2 * LAMPORTS_PER_SOL),
           bondingCurveSlope: new BN(190 * 1000000)
       };
 
@@ -62,10 +45,10 @@ async function initialize() {
           .accountsStrict({
               globalConfiguration,
               feeAccount,
-              payer: payer.publicKey,
+              payer: walletkey.publicKey,
               systemProgram: anchor.web3.SystemProgram.programId,
           })
-          .signers([payer])
+          .signers([walletkey])
           .rpc({ 
               commitment: 'confirmed',
               preflightCommitment: 'confirmed'
@@ -112,14 +95,12 @@ async function initialize() {
 }
 
 async function main() {
-    const walletData = JSON.parse(process.env.ANCHOR_WALLET);
-    const keypair = Keypair.fromSecretKey(new Uint8Array(walletData));
-    const wallet = new anchor.Wallet(keypair);
+    const walletInfoArray = new Uint8Array(walletInfo);
+    const walletkey = Keypair.fromSecretKey(walletInfoArray);
+    const wallet = new anchor.Wallet(walletkey);
+    console.log("  Address:", wallet.publicKey.toBase58());
 
-
-    let cnx = new anchor.web3.Connection(
-      process.env.ANCHOR_PROVIDER_URL || anchor.web3.clusterApiUrl('devnet')
-    );
+    let cnx = new anchor.web3.Connection(process.env.ANCHOR_PROVIDER_URL);
 
     const provider = new anchor.AnchorProvider(
       cnx,
@@ -128,22 +109,12 @@ async function main() {
     );
 
     anchor.setProvider(provider);
-
     let anchor_provider = anchor.getProvider();
-    console.log("anchor_provider: ", anchor_provider);
+    let connection: Connection = anchor_provider.connection;
 
-    connection = anchor_provider.connection;
-
-    console.log("Connected to Solana network:", connection.rpcEndpoint);
-    mykey = Keypair.fromSecretKey(new Uint8Array(mekey));
-    payer = Keypair.fromSecretKey(new Uint8Array(key1));
-    feeAccount = Keypair.fromSecretKey(new Uint8Array(key2));
-    console.log("player: ", payer.publicKey.toBase58());
-    console.log("feeAccount: ", feeAccount.publicKey.toBase58());
-    
     program = anchor.workspace.Token2022Kashe as Program<Token2022Kashe>;
 
-    await initialize();
+    await initialize(connection, walletkey);
    
     console.log('done');
 }

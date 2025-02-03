@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-
+import walletInfo from "/Users/gp/.config/solana/id.json";
 // Load environment variables from .env file
 dotenv.config();
 
@@ -43,7 +43,8 @@ import {
     ReturnTypeFetchMultiplePoolTickArrays,
     ApiV3PoolInfoConcentratedItem,
     PoolUtils,
-    ComputeClmmPoolInfo
+    ComputeClmmPoolInfo,
+    getCpmmPdaAmmConfigId
 } from '@raydium-io/raydium-sdk-v2';
 
 import mekey from "../tests/keys/mekey.json";
@@ -115,156 +116,46 @@ function sortMints(mintA, mintB) {
     return [mintA, mintB];
 }
 
-async function createPool(raydium, connection, params, owner) {
-    let poolId;
+async function createPool(raydium, params, owner, tokenAmount, solAmount) {
+    var poolId;
     try {
-        // const clmmConfigs = await raydium.api.getClmmConfigs()
-        const clmmConfigs = devConfigs; // devnet configs
-        const clmmConfigToUse = clmmConfigs[1];
+        const mintA = await raydium.token.getTokenInfo(params.quoteToken.toBase58());
+        const mintB = await raydium.token.getTokenInfo(params.baseToken);
 
-        console.log('Inputs for getPdaPoolId:', {
-            programId: DEVNET_PROGRAM_ID.CLMM.toBase58(),
-            configId: clmmConfigToUse.id,
-            token1: params.baseToken,
-            token2: params.quoteToken.toBase58()
-        });
+        const feeConfigs = await raydium.api.getCpmmConfigs()
 
-        const [sortedMintA, sortedMintB] = sortMints(
-            new PublicKey(params.baseToken),
-            params.quoteToken
-        );
-        const baseIsMintA = sortedMintA.equals(new PublicKey(params.baseToken));
-        console.log('Base token is:', baseIsMintA ? 'MintA' : 'MintB');
-        console.log('WSOL is:', baseIsMintA ? 'MintB' : 'MintA');
-    
-        const poolIdKeys = await getPdaPoolId(DEVNET_PROGRAM_ID.CLMM, new PublicKey(clmmConfigs[0].id), sortedMintA, sortedMintB);
-        poolId = poolIdKeys.publicKey.toBase58();
-        console.log('PoolId from getPdaPoolId:', poolId);
-
-        const mintA = await raydium.token.getTokenInfo(params.baseToken);
-        const mintB = await raydium.token.getTokenInfo(params.quoteToken.toBase58());
-
-        console.log('Inputs for createPool:', {
-            mint1: mintA.address,
-            mint2: mintB.address
-        });
-
-        // const tokenAccountB = await getOrCreateAssociatedTokenAccount(
-        //     connection,
-        //     owner,
-        //     params.quoteToken,
-        //     owner.publicKey,
-        //     true,  // allowOwnerOffCurve
-        //     'confirmed',
-        //     null,
-        //     TOKEN_2022_PROGRAM_ID  // Use token-2022 program
-        // );
-
-        const solBalance = await connection.getBalance(owner.publicKey);
-        console.log('SOL balance:', solBalance / LAMPORTS_PER_SOL, 'SOL');
-
-        // Check token balances
-        const tokenABalance = await connection.getTokenAccountBalance(
-            await getAssociatedTokenAddress(
-                new PublicKey(mintA.address),
-                owner.publicKey,
-                true,
-                TOKEN_2022_PROGRAM_ID
-            )
-        ).catch(e => console.log('No token A account found'));
-
-        const tokenBBalance = await connection.getTokenAccountBalance(
-            await getAssociatedTokenAddress(
-                new PublicKey(mintB.address),
-                owner.publicKey,
-                true,
-                TOKEN_2022_PROGRAM_ID
-            )
-        ).catch(e => console.log('No token B account found'));
-
-        console.log('Token balances:', {
-            tokenA: tokenABalance?.value?.uiAmount,
-            tokenB: tokenBBalance?.value?.uiAmount
-        });
-
-        // if (mintB.address.toString() === NATIVE_MINT_2022.toString()) {
-        //     // Calculate the amount needed in lamports
-        //     const wsolAmountNeeded = new BN(2 * (10 ** mintB.decimals)); // Adjust this to match your mintBAmount
-            
-        //     // Create a transaction to wrap SOL
-        //     const wrapSolIx = SystemProgram.transfer({
-        //         fromPubkey: owner.publicKey,
-        //         toPubkey: tokenAccountB.address,
-        //         lamports: wsolAmountNeeded.toNumber()
-        //     });
-
-        //     const syncNativeIx = createSyncNativeInstruction(
-        //         tokenAccountB.address,
-        //         TOKEN_2022_PROGRAM_ID
-        //     );
-
-        //     const wrapTx = new Transaction().add(wrapSolIx, syncNativeIx);
-            
-        //     // Send and confirm the wrapping transaction
-        //     const wrapTxId = await sendAndConfirmTransaction(
-        //         connection,
-        //         wrapTx,
-        //         [owner],
-        //         {
-        //             commitment: 'confirmed',
-        //             maxRetries: 3
-        //         }
-        //     );
-        //     console.log('Wrapped SOL, txId:', wrapTxId);
-            
-        //     // Verify the wrapped balance
-        //     const wrappedBalance = await connection.getTokenAccountBalance(tokenAccountB.address);
-        //     console.log('Wrapped SOL balance:', wrappedBalance.value.uiAmount);
-        // }
-      
-        // Initial Price based on devnet and curve completion at 1 Sol getting you about 300,000 tokens
-
-        var initialPrice;
-        if (baseIsMintA){
-            initialPrice = new Decimal(300000);            
-        }else{
-            initialPrice = new Decimal(1).div(300000);
+        if (raydium.cluster === 'devnet') {
+            feeConfigs.forEach((config) => {
+                config.id = getCpmmPdaAmmConfigId(DEVNET_PROGRAM_ID.CREATE_CPMM_POOL_PROGRAM, config.index).publicKey.toBase58()
+            })
         }
-
-        const ammConfig = {
-            id: new PublicKey(clmmConfigToUse.id),
-            index: 0,
-            // protocolFeeRate: 120000,
-            // tradeFeeRate: 100,
-            tickSpacing: 10,
-            fundFeeRate: 40000,
-            fundOwner: '',
-            description: ''
-        };
-
-        const { execute, extInfo } = await raydium.clmm.createPool({
-            programId: DEVNET_PROGRAM_ID.CLMM,
-            mint1: {
-                address: mintA.address,
-                decimals: mintA.decimals,
-                programId: TOKEN_2022_PROGRAM_ID.toBase58()
-            },
-            mint2: {
-                address: mintB.address, 
-                decimals: mintB.decimals,
-                programId: TOKEN_2022_PROGRAM_ID.toBase58()
-            },
-            ammConfig,
-            initialPrice,
+        const { execute, extInfo } = await raydium.cpmm.createPool({
+            // poolId: // your custom publicKey, default sdk will automatically calculate pda pool id
+            programId: DEVNET_PROGRAM_ID.CREATE_CPMM_POOL_PROGRAM, // devnet: DEVNET_PROGRAM_ID.CREATE_CPMM_POOL_PROGRAM
+            poolFeeAccount: DEVNET_PROGRAM_ID.CREATE_CPMM_POOL_FEE_ACC, // devnet:  DEVNET_PROGRAM_ID.CREATE_CPMM_POOL_FEE_ACC
+            mintA,
+            mintB,
+            mintAAmount: new BN(solAmount),
+            mintBAmount: new BN(tokenAmount),
             startTime: new BN(0),
-            txVersion
-        });
+            feeConfig: feeConfigs[0],
+            associatedOnly: false,
+            ownerInfo: {
+              useSOLBalance: true,
+            },
+            txVersion,
+            // optional: set up priority fee here
+            // computeBudgetConfig: {
+            //   units: 600000,
+            //   microLamports: 46591500,
+            // },
+          })
         poolId = extInfo.address.poolId.toBase58();
 
         console.log('PoolId from createPool:', poolId);
 
         const simulationResult = await execute({ 
-            simulate: true,  // This tells Raydium to simulate instead of sending
+            simulate: true,
             owner
         });
         
@@ -272,14 +163,24 @@ async function createPool(raydium, connection, params, owner) {
             txId: simulationResult.txId
         });
         
-        // If simulation looks good, then execute the real transaction
         if (simulationResult.value?.err) {
             throw new Error(`Simulation failed: ${JSON.stringify(simulationResult.value.err)}`);
         }
-        // don't want to wait confirm, set sendAndConfirm to false or don't pass any params to execute
+
         const { txId } = await execute({ sendAndConfirm: true })
-        // console.log('clmm pool created:', { txId: `https://explorer.solana.com/tx/${txId}` })
+        console.log('pool created:', txId)
         
+        console.log('pool created', {
+            txId,
+            poolKeys: Object.keys(extInfo.address).reduce(
+              (acc, cur) => ({
+                ...acc,
+                [cur]: extInfo.address[cur].toString(),
+              }),
+              {}
+            ),
+          })
+
         return poolId;
     } catch (error) {
         console.error("Detailed error:", {
@@ -493,9 +394,10 @@ async function testSwap(connection, poolId, payer, raydium, inputMint, tokenAmou
     }
 }
 async function main() {
-    const walletData = JSON.parse(process.env.ANCHOR_WALLET);
-    const keypair = Keypair.fromSecretKey(new Uint8Array(walletData));
-    const wallet = new anchor.Wallet(keypair);
+    const walletInfoArray = new Uint8Array(walletInfo);
+    const walletkey = Keypair.fromSecretKey(walletInfoArray);
+    const wallet = new anchor.Wallet(walletkey);
+    console.log("  Address:", wallet.publicKey.toBase58());
 
     // Create connection using other environment variables
     let cnx = new anchor.web3.Connection(
@@ -528,10 +430,10 @@ async function main() {
     const poolLockTime = 0;
     const startTime = Math.floor(Date.now() / 1000) + poolLockTime * 60 * 60;
     const cluster:Cluster = 'devnet';
-    const ft_contract_addr = "HFVwRx2h3HRSWuMyimTNjT6Fwgud3KdVx4e4qEzCG2Rf"; //BRONCO TOKEN
+    const ft_contract_addr = "3c8bN9oTVCb3PSrYRh9KRgcu2royXYe6hpvnfgq2pm58"; //CHICKEEN TOKEN
     const baseToken = ft_contract_addr;
-    const tokenAmount = new BN('500000000000000') // custom token
-    const solAmount = new BN('5000000000') // WSOL
+    const tokenAmount = new BN('100000000000000') // custom token
+    const solAmount = new BN('1000000000') // WSOL
     const quoteToken = NATIVE_MINT_2022;
 
     // const mintPubkey = new PublicKey(ft_contract_addr);
@@ -547,12 +449,12 @@ async function main() {
     };
 
     const raydium = await Raydium.load(config);
-    
-    const poolId = await createPool(raydium, connection, {
+    //raydium, params, owner, tokenAmount, solAmount
+    const poolId = await createPool(raydium, {
         baseToken,
         quoteToken,
         startTime,
-    }, payer)
+    }, payer, tokenAmount, solAmount)
     console.log(`poolId: ${poolId}`);
 
     const testSwapResult = await testSwap(connection, poolId, payer, raydium, ft_contract_addr, tokenAmount, solAmount);
