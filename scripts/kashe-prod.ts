@@ -35,7 +35,7 @@ async function initialize(connection: Connection, walletkey: Keypair) {
 
       const initializeArgu = {
           swapFee: new BN(200),
-          bondingCurveLimitation: new BN(2 * LAMPORTS_PER_SOL),
+          bondingCurveLimitation: new BN(40 * LAMPORTS_PER_SOL),
           bondingCurveSlope: new BN(190 * 1000000),
           authority: walletkey.publicKey
       };
