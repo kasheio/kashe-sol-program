@@ -170,16 +170,16 @@ impl<'info> Sell<'info> {
         self.bonding_curve.real_sol_reserves -= estimated_out_token;
         self.bonding_curve.real_token_reserves += in_amount;
 
-        emit!(BondingCurveSold {
-            mint_addr: self.mint_addr.key(),
-            seller: self.payer.key(),
-            token_amount: in_amount,
-            sol_amount: sol_out,
-            sol_reserves: self.bonding_curve.real_sol_reserves,
-            token_reserves: self.bonding_curve.real_token_reserves,
-            fees_paid: fees,
-            timestamp: Clock::get()?.unix_timestamp,
-        });
+        // emit!(BondingCurveSold {
+        //     mint_addr: self.mint_addr.key(),
+        //     seller: self.payer.key(),
+        //     token_amount: in_amount,
+        //     sol_amount: sol_out,
+        //     sol_reserves: self.bonding_curve.real_sol_reserves,
+        //     token_reserves: self.bonding_curve.real_token_reserves,
+        //     fees_paid: fees,
+        //     timestamp: Clock::get()?.unix_timestamp,
+        // });
 
         Ok(())
     }

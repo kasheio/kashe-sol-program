@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-token_2022_kashe = "37oqxteswoX2RzvAPmaujpUd3U4GNuigT8FGrQ5HHVPt"
+token_2022_kashe = "Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm"
 
 [registry]
 url = "https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c"

@@ -67,12 +67,12 @@ impl<'info> CreatePool<'info> {
     pub fn process(&mut self) -> Result<()> {
         self.bonding_curve.init(self.payer.key())?;
 
-        emit!(PoolCreated {
-            mint_addr: self.mint_addr.key(),
-            sol_pool: self.sol_pool.key(),
-            token_pool: self.token_pool.key(),
-            timestamp: Clock::get()?.unix_timestamp,
-        });
+        // emit!(PoolCreated {
+        //     mint_addr: self.mint_addr.key(),
+        //     sol_pool: self.sol_pool.key(),
+        //     token_pool: self.token_pool.key(),
+        //     timestamp: Clock::get()?.unix_timestamp,
+        // });
         
         Ok(())
     }

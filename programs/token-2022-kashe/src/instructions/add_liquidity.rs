@@ -77,13 +77,13 @@ impl<'info> AddLiquidity<'info> {
 
         self.bonding_curve.real_token_reserves += token_amount;
        
-        emit!(LiquidityAdded {
-            mint_addr: self.mint_addr.key(),
-            provider: self.user_ata.to_account_info().key(),
-            token_amount,
-            new_token_reserves: self.bonding_curve.real_token_reserves,
-            timestamp: Clock::get()?.unix_timestamp,
-        });
+        // emit!(LiquidityAdded {
+        //     mint_addr: self.mint_addr.key(),
+        //     provider: self.user_ata.to_account_info().key(),
+        //     token_amount,
+        //     new_token_reserves: self.bonding_curve.real_token_reserves,
+        //     timestamp: Clock::get()?.unix_timestamp,
+        // });
 
         Ok(())
     }

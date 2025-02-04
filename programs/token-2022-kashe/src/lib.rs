@@ -12,7 +12,7 @@ use crate::error::ErrorCode;
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("4eY8bwuTXjwJio3uoqH3df7ycWyk3quqZBUYTt3xezgB");
+declare_id!("AM4QGGmJrbfMX5NbNuT1EQ4mArWgbk8Zn4BfSbLGc2YS");
 
 #[program]
 pub mod token_2022_kashe {
