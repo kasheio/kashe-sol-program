@@ -4,6 +4,7 @@ anchor_version = "0.30.1"
 [features]
 resolution = true
 skip-lint = false
+init-if-needed = false
 
 [programs.devnet]
 token_2022_kashe = "Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm"

@@ -3,6 +3,7 @@ use anchor_lang::solana_program::system_instruction;
 use anchor_spl::{token_2022::Token2022, token_interface::{Mint, TokenAccount, transfer_checked, TransferChecked}};
 use crate::states::BondingCurve;
 use crate::error::ErrorCode;
+use crate::consts::SOL_POOL_SEED;
 
 #[derive(Accounts)]
 pub struct WithdrawFromBondingCurve<'info> {
@@ -19,7 +20,7 @@ pub struct WithdrawFromBondingCurve<'info> {
     /// CHECK:
     #[account(
         mut,
-        seeds = [b"sol_pool", mint_addr.key().as_ref()],
+        seeds = [SOL_POOL_SEED, mint_addr.key().as_ref()],
         bump,
     )]
     pub sol_pool: AccountInfo<'info>,
@@ -52,10 +53,10 @@ impl<'info> WithdrawFromBondingCurve<'info> {
         require!(self.bonding_curve.complete, ErrorCode::BondingCurveNotComplete);
         require!(self.receiver.key() == self.bonding_curve.creator, ErrorCode::UnauthorizedWithdraw);
 
-        msg!("Withdraw: {}, {}", 
-            self.bonding_curve.real_token_reserves,
-            self.bonding_curve.real_sol_reserves
-        );
+        // msg!("Withdraw: {}, {}", 
+        //     self.bonding_curve.real_token_reserves,
+        //     self.bonding_curve.real_sol_reserves
+        // );
 
         // Transfer all SOL
         let transfer_instruction = system_instruction::transfer(
@@ -72,7 +73,7 @@ impl<'info> WithdrawFromBondingCurve<'info> {
                 self.system_program.to_account_info(),
             ],
             &[&[
-                b"sol_pool",
+                SOL_POOL_SEED,
                 &self.mint_addr.key().to_bytes(),
                 &[bump],
             ]],
@@ -89,7 +90,7 @@ impl<'info> WithdrawFromBondingCurve<'info> {
                     mint: self.mint_addr.to_account_info(),
                 },
                 &[&[
-                    b"sol_pool",
+                    SOL_POOL_SEED,
                     &self.mint_addr.key().to_bytes(),
                     &[bump],
                 ]],

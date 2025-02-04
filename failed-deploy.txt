@@ -1,0 +1,1032 @@
+ --> programs/token-2022-kashe/src/instructions/buy.rs:1:5
+  |
+1 | use std::ops::Div;
+  |     ^^^^^^^^^^^^^
+
+warning: unused import: `native_token::LAMPORTS_PER_SOL`
+ --> programs/token-2022-kashe/src/instructions/buy.rs:5:22
+  |
+5 |     solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+  |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::error::Error`
+  --> programs/token-2022-kashe/src/instructions/buy.rs:18:5
+   |
+18 | use anchor_lang::error::Error;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::prelude::*`
+  --> programs/token-2022-kashe/src/instructions/buy.rs:19:5
+   |
+19 | use anchor_lang::prelude::*;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `Div`
+ --> programs/token-2022-kashe/src/instructions/sell.rs:1:16
+  |
+1 | use std::ops::{Div};
+  |                ^^^
+
+warning: unused import: `native_token::LAMPORTS_PER_SOL`
+ --> programs/token-2022-kashe/src/instructions/sell.rs:5:22
+  |
+5 |     solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+  |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::error::Error`
+  --> programs/token-2022-kashe/src/instructions/sell.rs:18:5
+   |
+18 | use anchor_lang::error::Error;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::prelude::*`
+  --> programs/token-2022-kashe/src/instructions/sell.rs:19:5
+   |
+19 | use anchor_lang::prelude::*;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `Div`, `Mul`
+ --> programs/token-2022-kashe/src/utils/calc_swap_quote.rs:1:16
+  |
+1 | use std::ops::{Div, Mul};
+  |                ^^^  ^^^
+
+warning: unused import: `crate::error::ErrorCode`
+  --> programs/token-2022-kashe/src/lib.rs:10:5
+   |
+10 | use crate::error::ErrorCode;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: constant `lamports_per_sol` should have an upper case name
+ --> programs/token-2022-kashe/src/utils/calc_swap_quote.rs:2:7
+  |
+2 | const lamports_per_sol: u64 = 1_000_000_000;
+  |       ^^^^^^^^^^^^^^^^ help: convert the identifier to upper case: `LAMPORTS_PER_SOL`
+  |
+  = note: `#[warn(non_upper_case_globals)]` on by default
+
+warning: `token-2022-kashe` (lib) generated 12 warnings (run `cargo fix --lib -p token-2022-kashe` to apply 11 suggestions)
+    Finished release [optimized] target(s) in 58.96s
+   Compiling proc-macro2 v1.0.89
+   Compiling unicode-ident v1.0.13
+   Compiling version_check v0.9.5
+   Compiling typenum v1.17.0
+   Compiling cfg-if v1.0.0
+   Compiling serde v1.0.215
+   Compiling libc v0.2.164
+   Compiling syn v1.0.109
+   Compiling subtle v2.4.1
+   Compiling autocfg v1.4.0
+   Compiling byteorder v1.5.0
+   Compiling generic-array v0.14.7
+   Compiling equivalent v1.0.1
+   Compiling memchr v2.7.4
+   Compiling hashbrown v0.15.1
+   Compiling indexmap v2.6.0
+   Compiling winnow v0.6.20
+   Compiling once_cell v1.20.2
+   Compiling anyhow v1.0.93
+   Compiling quote v1.0.37
+   Compiling thiserror v1.0.69
+   Compiling syn v2.0.87
+   Compiling serde_json v1.0.133
+   Compiling getrandom v0.2.15
+   Compiling cpufeatures v0.2.15
+   Compiling rand_core v0.6.4
+   Compiling ryu v1.0.18
+   Compiling semver v1.0.23
+   Compiling itoa v1.0.11
+   Compiling num-traits v0.2.19
+   Compiling getrandom v0.1.16
+   Compiling crunchy v0.2.2
+   Compiling crypto-common v0.1.6
+   Compiling block-buffer v0.10.4
+   Compiling opaque-debug v0.3.1
+   Compiling either v1.13.0
+   Compiling digest v0.10.7
+   Compiling ahash v0.8.11
+   Compiling crossbeam-utils v0.8.20
+   Compiling sha2 v0.10.8
+   Compiling paste v1.0.15
+   Compiling block-padding v0.2.1
+   Compiling num-integer v0.1.46
+   Compiling rustc_version v0.4.1
+   Compiling rand_core v0.5.1
+   Compiling num-bigint v0.4.6
+   Compiling digest v0.9.0
+   Compiling jobserver v0.1.32
+   Compiling wasm-bindgen-shared v0.2.95
+   Compiling shlex v1.3.0
+   Compiling cc v1.2.1
+   Compiling libsecp256k1-core v0.2.2
+   Compiling itertools v0.10.5
+   Compiling crossbeam-epoch v0.9.18
+   Compiling rayon-core v1.12.1
+   Compiling crossbeam-deque v0.8.5
+   Compiling ahash v0.7.8
+   Compiling bumpalo v3.16.0
+   Compiling log v0.4.22
+   Compiling feature-probe v0.1.1
+   Compiling wasm-bindgen-backend v0.2.95
+   Compiling libsecp256k1-gen-ecmult v0.2.1
+   Compiling bv v0.11.1
+   Compiling libsecp256k1-gen-genmult v0.2.1
+   Compiling borsh-derive-internal v0.10.4
+   Compiling solana-frozen-abi-macro v1.18.26
+   Compiling bitmaps v2.1.0
+   Compiling keccak v0.1.5
+   Compiling im v15.1.0
+   Compiling tinyvec_macros v0.1.1
+   Compiling rustversion v1.0.18
+   Compiling lazy_static v1.5.0
+   Compiling cfg_aliases v0.2.1
+   Compiling borsh v1.5.3
+   Compiling tinyvec v1.8.0
+   Compiling ark-serialize-derive v0.4.2
+   Compiling ark-ff-asm v0.4.2
+   Compiling derivative v2.2.0
+   Compiling ark-ff-macros v0.4.2
+   Compiling serde_derive v1.0.215
+   Compiling zerocopy-derive v0.7.35
+   Compiling thiserror-impl v1.0.69
+   Compiling zeroize_derive v1.4.2
+   Compiling sized-chunks v0.6.5
+   Compiling wasm-bindgen-macro-support v0.2.95
+   Compiling blake3 v1.5.1
+   Compiling rayon v1.10.0
+   Compiling zeroize v1.3.0
+   Compiling libsecp256k1 v0.6.0
+   Compiling borsh-derive-internal v0.9.3
+   Compiling zerocopy v0.7.35
+   Compiling borsh-schema-derive-internal v0.9.3
+   Compiling borsh-schema-derive-internal v0.10.4
+   Compiling solana-frozen-abi v1.18.26
+   Compiling rand_xoshiro v0.6.0
+   Compiling memoffset v0.9.1
+   Compiling arrayref v0.3.9
+   Compiling bs58 v0.4.0
+   Compiling wasm-bindgen v0.2.95
+   Compiling wasm-bindgen-macro v0.2.95
+   Compiling hashbrown v0.11.2
+   Compiling ppv-lite86 v0.2.20
+   Compiling hashbrown v0.13.2
+   Compiling rand_chacha v0.3.1
+   Compiling rand_chacha v0.2.2
+   Compiling rand v0.7.3
+   Compiling rand v0.8.5
+   Compiling unicode-normalization v0.1.24
+   Compiling bytemuck_derive v1.8.0
+   Compiling ark-std v0.4.0
+   Compiling solana-program v1.18.26
+   Compiling memmap2 v0.5.10
+   Compiling arrayvec v0.7.6
+   Compiling rustc-hash v1.1.0
+   Compiling constant_time_eq v0.3.1
+   Compiling base64 v0.12.3
+   Compiling solana-sdk-macro v1.18.26
+   Compiling num-derive v0.4.2
+   Compiling base64 v0.21.7
+   Compiling aho-corasick v1.1.3
+   Compiling bytemuck v1.19.0
+   Compiling regex-syntax v0.8.5
+   Compiling fnv v1.0.7
+   Compiling strsim v0.11.1
+   Compiling ident_case v1.0.1
+   Compiling darling_core v0.20.10
+   Compiling signature v1.6.4
+   Compiling atty v0.2.14
+   Compiling ed25519 v1.5.3
+   Compiling unicode-segmentation v1.12.0
+   Compiling termcolor v1.4.1
+   Compiling humantime v2.1.0
+   Compiling heck v0.3.3
+   Compiling solana-sdk v1.18.26
+   Compiling percent-encoding v2.3.1
+   Compiling derivation-path v0.2.0
+   Compiling qstring v0.7.2
+   Compiling uriparse v0.6.4
+   Compiling qualifier_attr v0.2.2
+   Compiling chrono v0.4.38
+   Compiling siphasher v0.3.11
+   Compiling bs58 v0.5.1
+   Compiling assert_matches v1.5.0
+   Compiling spl-discriminator-syn v0.2.0
+   Compiling merlin v3.0.0
+   Compiling spl-program-error-derive v0.4.1
+   Compiling spl-discriminator-derive v0.2.0
+   Compiling solana-security-txt v1.1.1
+   Compiling num-derive v0.3.3
+   Compiling regex-automata v0.4.9
+   Compiling anchor-derive-space v0.30.1
+   Compiling serde_spanned v0.6.8
+   Compiling toml_datetime v0.6.8
+   Compiling toml v0.5.11
+   Compiling anchor-lang-idl-spec v0.1.0
+   Compiling toml_edit v0.22.22
+   Compiling serde_bytes v0.11.15
+   Compiling bitflags v2.6.0
+   Compiling block-buffer v0.9.0
+   Compiling crypto-mac v0.8.0
+   Compiling sha2 v0.9.9
+   Compiling hmac v0.8.1
+   Compiling curve25519-dalek v3.2.1
+   Compiling ark-serialize v0.4.2
+   Compiling proc-macro-crate v0.1.5
+   Compiling hmac-drbg v0.3.0
+   Compiling pbkdf2 v0.4.0
+   Compiling ark-ff v0.4.2
+   Compiling tiny-bip39 v0.8.2
+   Compiling sha3 v0.10.8
+   Compiling borsh-derive v0.9.3
+   Compiling borsh-derive v0.10.4
+   Compiling borsh v0.9.3
+   Compiling proc-macro-crate v3.2.0
+   Compiling borsh v0.10.4
+   Compiling bincode v1.3.3
+   Compiling regex v1.11.1
+   Compiling darling_macro v0.20.10
+   Compiling cipher v0.3.0
+   Compiling toml v0.8.19
+   Compiling env_logger v0.9.3
+   Compiling darling v0.20.10
+   Compiling ed25519-dalek v1.0.1
+   Compiling hmac v0.12.1
+   Compiling universal-hash v0.4.1
+   Compiling polyval v0.5.3
+   Compiling ed25519-dalek-bip32 v0.2.0
+   Compiling borsh-derive v1.5.3
+   Compiling num_enum_derive v0.7.3
+   Compiling serde_with_macros v2.3.3
+   Compiling cargo_toml v0.19.2
+   Compiling solana-logger v1.18.26
+   Compiling aes v0.7.5
+   Compiling ctr v0.8.0
+   Compiling pbkdf2 v0.11.0
+   Compiling aead v0.4.3
+   Compiling sha3 v0.9.1
+   Compiling anchor-lang-idl v0.1.1
+   Compiling aes-gcm-siv v0.10.3
+   Compiling serde_with v2.3.3
+   Compiling num_enum v0.7.3
+   Compiling anchor-syn v0.30.1
+   Compiling anchor-attribute-account v0.30.1
+   Compiling anchor-attribute-error v0.30.1
+   Compiling anchor-derive-serde v0.30.1
+   Compiling anchor-attribute-constant v0.30.1
+   Compiling anchor-attribute-event v0.30.1
+   Compiling anchor-attribute-program v0.30.1
+   Compiling anchor-derive-accounts v0.30.1
+   Compiling anchor-attribute-access-control v0.30.1
+   Compiling ark-poly v0.4.2
+   Compiling ark-ec v0.4.2
+   Compiling ark-bn254 v0.4.0
+   Compiling light-poseidon v0.2.0
+   Compiling spl-program-error v0.4.4
+   Compiling spl-discriminator v0.2.5
+   Compiling spl-token v4.0.3
+   Compiling spl-memo v4.0.4
+   Compiling mpl-token-metadata v4.1.2
+   Compiling anchor-lang v0.30.1
+   Compiling solana-zk-token-sdk v1.18.26
+   Compiling spl-pod v0.2.5
+   Compiling spl-type-length-value v0.4.6
+   Compiling spl-token-group-interface v0.2.5
+   Compiling spl-tlv-account-resolution v0.6.5
+   Compiling spl-token-metadata-interface v0.3.5
+   Compiling spl-transfer-hook-interface v0.6.5
+   Compiling spl-token-2022 v3.0.4
+   Compiling spl-associated-token-account v3.0.4
+   Compiling anchor-spl v0.30.1
+   Compiling token-2022-kashe v0.1.0 (/Users/gp/CascadeProjects/kashe-sol-program/programs/token-2022-kashe)
+warning: unexpected `cfg` condition value: `custom-heap`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `custom-heap` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: `#[warn(unexpected_cfgs)]` on by default
+   = note: this warning originates in the macro `$crate::custom_heap_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `solana`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `target_os` are: `aix`, `android`, `cuda`, `dragonfly`, `emscripten`, `espidf`, `freebsd`, `fuchsia`, `haiku`, `hermit`, `horizon`, `hurd`, `illumos`, `ios`, `l4re`, `linux`, `macos`, `netbsd`, `none`, `nto`, `nuttx`, `openbsd`, `psp`, `psx`, `redox`, `rtems`, `solaris`, `solid_asp3`, `teeos`, `trusty`, `tvos`, `uefi`, `unknown`, `visionos`, and `vita` and 6 more
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the macro `$crate::custom_heap_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `custom-panic`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `custom-panic` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the macro `$crate::custom_panic_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `solana`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `target_os` are: `aix`, `android`, `cuda`, `dragonfly`, `emscripten`, `espidf`, `freebsd`, `fuchsia`, `haiku`, `hermit`, `horizon`, `hurd`, `illumos`, `ios`, `l4re`, `linux`, `macos`, `netbsd`, `none`, `nto`, `nuttx`, `openbsd`, `psp`, `psx`, `redox`, `rtems`, `solaris`, `solid_asp3`, `teeos`, `trusty`, `tvos`, `uefi`, `unknown`, `visionos`, and `vita` and 6 more
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the macro `$crate::custom_panic_default` which comes from the expansion of the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+ --> programs/token-2022-kashe/src/instructions/initialize.rs:8:10
+  |
+8 | #[derive(Accounts)]
+  |          ^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused import: `self`
+ --> programs/token-2022-kashe/src/instructions/create_pool.rs:3:42
+  |
+3 |     solana_program::system_instruction::{self},
+  |                                          ^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+  --> programs/token-2022-kashe/src/instructions/create_pool.rs:16:10
+   |
+16 | #[derive(Accounts)]
+   |          ^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+ --> programs/token-2022-kashe/src/instructions/add_liquidity.rs:8:10
+  |
+8 | #[derive(Accounts)]
+  |          ^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused import: `std::ops::Div`
+ --> programs/token-2022-kashe/src/instructions/buy.rs:1:5
+  |
+1 | use std::ops::Div;
+  |     ^^^^^^^^^^^^^
+
+warning: unused import: `native_token::LAMPORTS_PER_SOL`
+ --> programs/token-2022-kashe/src/instructions/buy.rs:5:22
+  |
+5 |     solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+  |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::error::Error`
+  --> programs/token-2022-kashe/src/instructions/buy.rs:18:5
+   |
+18 | use anchor_lang::error::Error;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::prelude::*`
+  --> programs/token-2022-kashe/src/instructions/buy.rs:19:5
+   |
+19 | use anchor_lang::prelude::*;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+  --> programs/token-2022-kashe/src/instructions/buy.rs:23:10
+   |
+23 | #[derive(Accounts)]
+   |          ^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused import: `Div`
+ --> programs/token-2022-kashe/src/instructions/sell.rs:1:16
+  |
+1 | use std::ops::{Div};
+  |                ^^^
+
+warning: unused import: `native_token::LAMPORTS_PER_SOL`
+ --> programs/token-2022-kashe/src/instructions/sell.rs:5:22
+  |
+5 |     solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+  |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::error::Error`
+  --> programs/token-2022-kashe/src/instructions/sell.rs:18:5
+   |
+18 | use anchor_lang::error::Error;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `anchor_lang::prelude::*`
+  --> programs/token-2022-kashe/src/instructions/sell.rs:19:5
+   |
+19 | use anchor_lang::prelude::*;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+  --> programs/token-2022-kashe/src/instructions/sell.rs:23:10
+   |
+23 | #[derive(Accounts)]
+   |          ^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+ --> programs/token-2022-kashe/src/instructions/withdraw.rs:7:10
+  |
+7 | #[derive(Accounts)]
+  |          ^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+ --> programs/token-2022-kashe/src/instructions/withdraw_fees.rs:9:10
+  |
+9 | #[derive(Accounts)]
+  |          ^^^^^^^^
+  |
+  = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+  = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+  = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+  = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unused imports: `Div` and `Mul`
+ --> programs/token-2022-kashe/src/utils/calc_swap_quote.rs:1:16
+  |
+1 | use std::ops::{Div, Mul};
+  |                ^^^  ^^^
+
+warning: unused import: `crate::error::ErrorCode`
+  --> programs/token-2022-kashe/src/lib.rs:10:5
+   |
+10 | use crate::error::ErrorCode;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the attribute macro `program` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: unexpected `cfg` condition value: `anchor-debug`
+  --> programs/token-2022-kashe/src/lib.rs:17:1
+   |
+17 | #[program]
+   | ^^^^^^^^^^
+   |
+   = note: expected values for `feature` are: `cpi`, `default`, `idl-build`, `no-entrypoint`, `no-idl`, and `no-log-ix-name`
+   = help: consider adding `anchor-debug` as a feature in `Cargo.toml`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+   = note: this warning originates in the derive macro `Accounts` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+warning: constant `lamports_per_sol` should have an upper case name
+ --> programs/token-2022-kashe/src/utils/calc_swap_quote.rs:2:7
+  |
+2 | const lamports_per_sol: u64 = 1_000_000_000;
+  |       ^^^^^^^^^^^^^^^^ help: convert the identifier to upper case: `LAMPORTS_PER_SOL`
+  |
+  = note: `#[warn(non_upper_case_globals)]` on by default
+
+warning: `token-2022-kashe` (lib test) generated 30 warnings (5 duplicates) (run `cargo fix --lib -p token-2022-kashe --tests` to apply 11 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 31.25s
+     Running unittests src/lib.rs (/Users/gp/CascadeProjects/kashe-sol-program/target/debug/deps/token_2022_kashe-82d6418408040251)
+(base) gp@Gregorys-MBP-2 kashe-sol-program % anchor deploy
+Deploying cluster: https://api.mainnet-beta.solana.com
+Upgrade authority: /Users/gp/.config/solana/id.json
+Deploying program "token_2022_kashe"...
+Program path: /Users/gp/CascadeProjects/kashe-sol-program/target/deploy/token_2022_kashe.so...
+Blockhash expired. 4 retries remaining
+Blockhash expired. 3 retries remaining
+Blockhash expired. 2 retries remaining
+Blockhash expired. 1 retries remaining
+Blockhash expired. 0 retries remaining
+================================================================================
+Recover the intermediate account's ephemeral keypair file with
+`solana-keygen recover` and the following 12-word seed phrase:
+================================================================================
+settle gorilla edge tide blossom document direct zone devote cricket crime piano
+================================================================================
+To resume a deploy, pass the recovered keypair as the
+[BUFFER_SIGNER] to `solana program deploy` or `solana program write-buffer'.
+Or to recover the account's lamports, pass it as the
+[BUFFER_ACCOUNT_ADDRESS] argument to `solana program close`.
+================================================================================
+Error: Data writes to account failed: Custom error: Max retries exceeded
+There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen recover -o recovered-keypair.json
+[recover] seed phrase: 
+[recover] If this seed phrase has an associated passphrase, enter it now. Otherwise, press ENTER to continue: 
+Recovered pubkey `"FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH"`. Continue? (y/n): 
+y
+Wrote recovered keypair to recovered-keypair.json
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffer recovered-keypair.json
+error: Found argument '--buffer' which wasn't expected, or isn't valid in this context
+        Did you mean --buffers?
+
+USAGE:
+    solana program close --buffers
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers recovered-keypair.json
+error: The argument '<ACCOUNT_ADDRESS>' cannot be used with '--buffers'
+
+USAGE:
+    solana program close --buffers --config <FILEPATH>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+error: The argument '<ACCOUNT_ADDRESS>' cannot be used with '--buffers'
+
+USAGE:
+    solana program close --buffers --config <FILEPATH>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers
+
+Buffer Address                               | Authority                                    | Balance
+FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH | CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E | 2.61482328 SOL
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance
+0 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana transaction-history
+error: The following required arguments were not provided:
+    <ADDRESS>
+
+USAGE:
+    solana transaction-history <ADDRESS> --config <FILEPATH> --limit <LIMIT>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana transaction-history 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
+144 transactions found
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % ls -l program.so
+ls: program.so: No such file or directory
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program deploy --dump deployed-program-address program.so
+error: Found argument '--dump' which wasn't expected, or isn't valid in this context
+
+USAGE:
+    solana program deploy [FLAGS] [OPTIONS] [PROGRAM_FILEPATH]
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen recover -o recovered-keypair2.json                     
+[recover] seed phrase: 
+Error: Can't get mnemonic from seed phrases
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen recover -o recovered-keypair2.json
+[recover] seed phrase: 
+[recover] If this seed phrase has an associated passphrase, enter it now. Otherwise, press ENTER to continue: 
+Recovered pubkey `"FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH"`. Continue? (y/n): 
+y
+Wrote recovered keypair to recovered-keypair2.json
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program deploy
+Error: Program location required if buffer not supplied
+(base) gp@Gregorys-MBP-2 kashe-sol-program % ls -l ./target/deploy 
+total 744
+-rw-r--r--@ 1 gp  staff     288 Feb  3 17:12 token_2022_kashe-keypair.json
+-rwxr-xr-x@ 1 gp  staff  375520 Feb  3 17:14 token_2022_kashe.so
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffer recovered-keypair.json
+error: Found argument '--buffer' which wasn't expected, or isn't valid in this context
+        Did you mean --buffers?
+
+USAGE:
+    solana program close --buffers
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana config get
+Config File: /Users/gp/.config/solana/cli/config.yml
+RPC URL: https://api.mainnet-beta.solana.com 
+WebSocket URL: wss://api.mainnet-beta.solana.com/ (computed)
+Keypair Path: /Users/gp/.config/solana/id.json 
+Commitment: confirmed 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % mv /Users/gp/.config/solana/id.json /Users/gp/.config/solana/id-kashe-prod.json 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen recover                                                           
+[recover] seed phrase: 
+[recover] If this seed phrase has an associated passphrase, enter it now. Otherwise, press ENTER to continue: 
+Recovered pubkey `"FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH"`. Continue? (y/n): 
+y
+Wrote recovered keypair to /Users/gp/.config/solana/id.json
+(base) gp@Gregorys-MBP-2 kashe-sol-program % vi /Users/gp/.config/solana/id-kashe-prod.json 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % vi /Users/gp/.config/solana/id.json            
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close
+error: The following required arguments were not provided:
+    --buffers
+
+USAGE:
+    solana program close --buffers --config <FILEPATH>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+Error: Unable to find the account FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers                                   
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program show --buffers
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program show CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error: Unable to find the account CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program show Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm
+Error: Unable to find the account Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm
+(base) gp@Gregorys-MBP-2 kashe-sol-program % mv /Users/gp/.config/solana/id.json /Users/gp/.config/solana/id-recovered.json  
+(base) gp@Gregorys-MBP-2 kashe-sol-program % mv /Users/gp/.config/solana/id-kashe-prod.json /Users/gp/.config/solana/id.json 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program show Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm                 
+Error: Unable to find the account Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error: Unable to find the account CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana close Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm
+error: The subcommand 'close' wasn't recognized
+        Did you mean 'close-vote-account'?
+
+If you believe you received this message in error, try re-running with 'solana -- close'
+
+USAGE:
+    solana [FLAGS] [OPTIONS] <SUBCOMMAND>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program show --programs | grep Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana account --output json CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E | grep "BPFLoaderUpgradeab1e11111111111111111111111"
+Error: AccountNotFound: pubkey=CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana address-lookup-tables CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+error: The subcommand 'address-lookup-tables' wasn't recognized
+        Did you mean 'address-lookup-table'?
+
+If you believe you received this message in error, try re-running with 'solana -- address-lookup-tables'
+
+USAGE:
+    solana [FLAGS] [OPTIONS] <SUBCOMMAND>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana address-lookup-table CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+error: Found argument 'CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E' which wasn't expected, or isn't valid in this context
+
+USAGE:
+    solana address-lookup-table [FLAGS] [OPTIONS] <SUBCOMMAND>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana address-lookup-table get CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error: Lookup table account CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E not found, was it already closed?
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana transaction-history --show-transactions CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+
+^C
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana account CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error: AccountNotFound: pubkey=CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --keypair recovered-keypair.json 
+error: The following required arguments were not provided:
+    --buffers
+
+USAGE:
+    solana program close --buffers --config <FILEPATH> --keypair <KEYPAIR>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers --keypair recovered-keypair.json
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance recovered-keypair.json
+0 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana account recovered-keypair.json
+Error: AccountNotFound: pubkey=FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+0 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+0.3 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % ls -l ./target/deploy/token_2022_kashe.so 
+-rwxr-xr-x@ 1 gp  staff  375520 Feb  3 17:14 ./target/deploy/token_2022_kashe.so
+(base) gp@Gregorys-MBP-2 kashe-sol-program % ls
+Anchor.toml                                     programs
+Anchor.toml.dev                                 recovered-keypair.json
+Anchor.toml.prod                                recovered-keypair2.json
+Cargo.lock                                      scripts
+Cargo.toml                                      subtle-striker-443420-h0-9ec708d80a59.json
+README.md                                       target
+id.json                                         tests
+node_modules                                    tsconfig.json
+package.json                                    yarn.lock
+pnpm-lock.yaml
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH --buffer recovered-keypair.json
+error: Found argument '--buffer' which wasn't expected, or isn't valid in this context
+        Did you mean --buffers?
+
+USAGE:
+    solana program close --buffers
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers recovered-keypair.json FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+error: Found argument 'FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH' which wasn't expected, or isn't valid in this context
+
+USAGE:
+    solana program close --buffers
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers recovered-keypair.json
+error: The argument '<ACCOUNT_ADDRESS>' cannot be used with '--buffers'
+
+USAGE:
+    solana program close --buffers --config <FILEPATH>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --help
+solana-program-close 
+Close a program or buffer account and withdraw all lamports
+
+USAGE:
+    solana program close [FLAGS] [OPTIONS] --buffers [ACCOUNT_ADDRESS]
+
+FLAGS:
+        --buffers                        Close all buffer accounts that match the authority
+        --bypass-warning                 Bypass the permanent program closure warning
+    -h, --help                           Prints help information
+        --lamports                       Display balance in lamports instead of SOL
+        --no-address-labels              Do not use address labels in the output
+        --skip-seed-phrase-validation    Skip validation of seed phrases. Use this if your phrase does not use the BIP39
+                                         official English word list
+        --use-quic                       Use QUIC when sending transactions.
+        --use-tpu-client                 Use TPU client when sending transactions.
+        --use-udp                        Use UDP when sending transactions.
+    -V, --version                        Prints version information
+    -v, --verbose                        Show additional information
+
+OPTIONS:
+        --authority <AUTHORITY_SIGNER>     Upgrade or buffer authority [default: the default configured keypair]
+        --commitment <COMMITMENT_LEVEL>    Return information at the selected commitment level [possible values:
+                                           processed, confirmed, finalized]
+    -C, --config <FILEPATH>                Configuration file to use [default: /Users/gp/.config/solana/cli/config.yml]
+    -u, --url <URL_OR_MONIKER>             URL for Solana's JSON RPC or moniker (or their first letter): [mainnet-beta,
+                                           testnet, devnet, localhost]
+    -k, --keypair <KEYPAIR>                Filepath or URL to a keypair
+        --output <FORMAT>                  Return information in specified output format [possible values: json, json-
+                                           compact]
+        --recipient <RECIPIENT_ADDRESS>    Recipient of closed account's lamports [default: the default configured
+                                           keypair]. Address is one of:
+                                             * a base58-encoded public key
+                                             * a path to a keypair file
+                                             * a hyphen; signals a JSON-encoded keypair on stdin
+                                             * the 'ASK' keyword; to recover a keypair via its seed phrase
+                                             * a hardware wallet keypair URL (i.e. usb://ledger)
+        --ws <URL>                         WebSocket URL for the solana cluster
+
+ARGS:
+    <ACCOUNT_ADDRESS>    Address of the program or buffer account to close
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH --authority recovered-keypair.json
+Error: Unable to find the account FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers --authority recovered-keypair.json
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen pubkey recovered-keypair.json
+FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen pubkey recovered-keypair2.json 
+FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana-keygen pubkey ~/.config/solana/id.json
+CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana account recovered-keypair.json  
+Error: AccountNotFound: pubkey=FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana account FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+Error: AccountNotFound: pubkey=FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close --buffers                             
+
+Buffer Address                               | Authority                                    | Balance
+
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close
+error: The following required arguments were not provided:
+    --buffers
+
+USAGE:
+    solana program close --buffers --config <FILEPATH>
+
+For more information try --help
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E
+Error: CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E is not a Program or Buffer account
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance CTofg77KrCCdUKoGmcFS67zchX1jQCtz8Zxd3iWZpm9E    
+0.3 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana balance CfyTGtbSVbwiLRQQuEKTJK8P7Lv9attvP8LUi4RkdRVV
+47.515894178 SOL
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close CfyTGtbSVbwiLRQQuEKTJK8P7Lv9attvP8LUi4RkdRVV
+Error: CfyTGtbSVbwiLRQQuEKTJK8P7Lv9attvP8LUi4RkdRVV is not a Program or Buffer account
+(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+
+
+solana program show --help          
+solana-program-show 
+Display information about a buffer or program
+
+USAGE:
+    solana program show [FLAGS] [OPTIONS] --buffers --programs [ACCOUNT_ADDRESS]
+
+FLAGS:
+        --all                            Show accounts for all authorities
+        --buffers                        Show every upgradeable buffer that matches the authority
+    -h, --help                           Prints help information
+        --lamports                       Display balance in lamports instead of SOL
+        --no-address-labels              Do not use address labels in the output
+        --programs                       Show every upgradeable program that matches the authority
+        --skip-seed-phrase-validation    Skip validation of seed phrases. Use this if your phrase does not use the BIP39
+                                         official English word list
+        --use-quic                       Use QUIC when sending transactions.
+        --use-tpu-client                 Use TPU client when sending transactions.
+        --use-udp                        Use UDP when sending transactions.
+    -V, --version                        Prints version information
+    -v, --verbose                        Show additional information
+
+OPTIONS:
+        --buffer-authority <AUTHORITY>     Authority [default: the default configured keypair]. Address is one of:
+                                             * a base58-encoded public key
+                                             * a path to a keypair file
+                                             * a hyphen; signals a JSON-encoded keypair on stdin
+                                             * the 'ASK' keyword; to recover a keypair via its seed phrase
+                                             * a hardware wallet keypair URL (i.e. usb://ledger)
+        --commitment <COMMITMENT_LEVEL>    Return information at the selected commitment level [possible values:
+                                           processed, confirmed, finalized]
+    -C, --config <FILEPATH>                Configuration file to use [default: /Users/gp/.config/solana/cli/config.yml]
+    -u, --url <URL_OR_MONIKER>             URL for Solana's JSON RPC or moniker (or their first letter): [mainnet-beta,
+                                           testnet, devnet, localhost]
+    -k, --keypair <KEYPAIR>                Filepath or URL to a keypair
+        --output <FORMAT>                  Return information in specified output format [possible values: json, json-
+                                           compact]
+        --ws <URL>                         WebSocket URL for the solana cluster
+
+ARGS:
+    <ACCOUNT_ADDRESS>    Address of the buffer or program to show

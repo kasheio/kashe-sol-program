@@ -2,8 +2,8 @@ use anchor_lang::prelude::*;
 use anchor_spl::{ token_interface::{Mint, TokenAccount, TransferChecked, transfer_checked},
     token_2022::Token2022};
 
-use crate::events::LiquidityAdded;  // Change from states to events
 use crate::states::{BondingCurve, InitializeConfiguration};
+use crate::consts::SOL_POOL_SEED;
 
 #[derive(Accounts)]
 #[instruction(token_amount: u64)]
@@ -17,9 +17,7 @@ pub struct AddLiquidity<'info> {
 
     #[account(
         mut,
-        seeds = [
-            b"sol_pool", mint_addr.key().as_ref()
-        ],
+        seeds = [SOL_POOL_SEED, mint_addr.key().as_ref()],
         bump,
     )]
     /// CHECK:

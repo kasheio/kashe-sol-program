@@ -9,3 +9,5 @@ pub struct InitializeConfigurationParam {
 }
 
 pub const FEE_SEED : &'static [u8] = b"kashe_fee";
+pub const SOL_POOL_SEED : &'static [u8] = b"sol_pool";
+pub const BPS_DECIMALS: u64 = 10000;

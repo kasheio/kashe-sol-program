@@ -27,17 +27,17 @@ pub struct Initialize<'info> {
 
 impl<'info> Initialize<'info> {
     pub fn process(&mut self, param: InitializeConfigurationParam) -> Result<()> {
-        let bonding_curve_limitation = param.bonding_curve_limitation;
-        let bonding_curve_slope = param.bonding_curve_slope;
-        let swap_fee = param.swap_fee;
-        let authority = param.authority;
+        // let bonding_curve_limitation = param.bonding_curve_limitation;
+        // let bonding_curve_slope = param.bonding_curve_slope;
+        // let swap_fee = param.swap_fee;
+        // let authority = param.authority;
 
-        msg!("Initializing with parameters:");
-        msg!("Bonding Curve Limitation: {}", bonding_curve_limitation);
-        msg!("Bonding Curve Slope: {}", bonding_curve_slope);  
-        msg!("Bonding Swap Fee: {}", swap_fee);
-        msg!("Setting global configuration values...");
-        msg!("Authority: {}", authority);
+        // msg!("Initializing with parameters:");
+        // msg!("Bonding Curve Limitation: {}", bonding_curve_limitation);
+        // msg!("Bonding Curve Slope: {}", bonding_curve_slope);  
+        // msg!("Bonding Swap Fee: {}", swap_fee);
+        // msg!("Setting global configuration values...");
+        // msg!("Authority: {}", authority);
 
         self.global_configuration.set_value(param)?;
 

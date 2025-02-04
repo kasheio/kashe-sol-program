@@ -1,24 +1,19 @@
-use std::ops::{Div};
-
 use anchor_lang::{
     prelude::*,
-    solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+    solana_program::{system_instruction},
 };
 use anchor_spl::{
-     token_2022:: Token2022, token_interface::{Mint, TokenAccount,transfer_checked,TransferChecked}
+     token_2022:: Token2022, token_interface::{Mint, TokenAccount, transfer_checked, TransferChecked}
 };
 
 use crate::{    
-    events::{BondingCurveSold},
     states::{BondingCurve, InitializeConfiguration},
     utils::calc_swap_quote,
 };
 
 use crate::error::ErrorCode;
-use anchor_lang::error::Error;
-use anchor_lang::prelude::*;
-
-const BPS_DECIMALS: u64 = 10000;
+use crate::consts::SOL_POOL_SEED;
+use crate::consts::BPS_DECIMALS;
 
 #[derive(Accounts)]
 #[instruction(in_amount: u64)]
@@ -53,7 +48,7 @@ pub struct Sell<'info> {
     #[account(
         mut,
         seeds = [
-            b"sol_pool", mint_addr.key().as_ref()
+            SOL_POOL_SEED, mint_addr.key().as_ref()
         ],
         bump,
     )]
@@ -102,11 +97,11 @@ impl<'info> Sell<'info> {
             in_amount,
             self.mint_addr.decimals,
         )?;
-        msg!(
-            "Sell Token {} token => {} sol ",
-            in_amount,
-            estimated_out_token
-        );
+        // msg!(
+        //     "Sell Token {} token => {} sol ",
+        //     in_amount,
+        //     estimated_out_token
+        // );
 
         let fees = estimated_out_token
             .checked_mul(self.global_configuration.swap_fee as u64)
@@ -114,19 +109,19 @@ impl<'info> Sell<'info> {
             .checked_div(BPS_DECIMALS)
             .ok_or(ErrorCode::MathOverflow)?;
 
-        msg!(
-            "Sell Token fees {} sol ",
-            fees
-        );
+        // msg!(
+        //     "Sell Token fees {} sol ",
+        //     fees
+        // );
 
         let sol_out = estimated_out_token
             .checked_sub(fees)
             .ok_or(ErrorCode::MathOverflow)?;
             
-        msg!(
-            "Sell Token sol_out {} sol ",
-            sol_out
-        );
+        // msg!(
+        //     "Sell Token sol_out {} sol ",
+        //     sol_out
+        // );
         
         let transfer_instruction = system_instruction::transfer(
             &self.sol_pool.to_account_info().key(),

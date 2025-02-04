@@ -1017,4 +1017,4 @@ Or to recover the account's lamports, pass it as the
 ================================================================================
 Error: Data writes to account failed: Custom error: Max retries exceeded
 There was a problem deploying: Output { status: ExitStatus(unix_wait_status(256)), stdout: "", stderr: "" }.
-(base) gp@Gregorys-MBP-2 kashe-sol-program % 
+(base) gp@Gregorys-MBP-2 kashe-sol-program % solana program close FbSXFJYW8VVVsazke1tgA6Goo1m7Qdw2YmBqvbRdqUZH --buffer recovered-keypair.json

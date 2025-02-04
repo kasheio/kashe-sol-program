@@ -2,12 +2,12 @@ use anchor_lang::prelude::*;
 
 #[error_code]
 pub enum ErrorCode {
-    #[msg("Math operation overflowed")]
+    #[msg("Math overflowed")]
     MathOverflow,
-    #[msg("Total amount must be greater than or equal to purchase amount")]
+    #[msg("Amount too small")]
     InsufficientFunds,
-    #[msg("Bonding curve must be complete to withdraw")]
+    #[msg("Not completed yet")]
     BondingCurveNotComplete,
-    #[msg("Only pool creator can withdraw funds")]
+    #[msg("Not pool creator")]
     UnauthorizedWithdraw
 }

@@ -1,8 +1,6 @@
-use std::ops::Div;
-
 use anchor_lang::{
     prelude::*,
-    solana_program::{native_token::LAMPORTS_PER_SOL, system_instruction},
+    solana_program::{system_instruction},
 };
 
 use anchor_spl::{
@@ -10,15 +8,25 @@ use anchor_spl::{
 };
 
 use crate::{
-    events::{BondingCurveCompleted, BondingCurveBought},
     states::{BondingCurve, InitializeConfiguration},
     utils::calc_swap_quote,
 };
 use crate::error::ErrorCode;
-use anchor_lang::error::Error;
-use anchor_lang::prelude::*;
+use crate::consts::SOL_POOL_SEED;
+use crate::consts::BPS_DECIMALS;
 
-const BPS_DECIMALS: u64 = 10000;
+#[event]
+pub struct BondingCurveBought {
+    pub mint_addr: Pubkey,
+    pub buyer: Pubkey,
+    pub sol_amount: u64,
+    pub token_amount: u64,
+    pub sol_reserves: u64,
+    pub token_reserves: u64,
+    pub fees_paid: u64,
+    pub timestamp: i64,
+    pub complete: bool,
+}
 
 #[derive(Accounts)]
 #[instruction(purchase_amount: u64, total_amount: u64)]
@@ -51,9 +59,7 @@ pub struct Buy<'info> {
     /// CHECK:
     #[account(
         mut,
-        seeds = [
-            b"sol_pool", mint_addr.key().as_ref()
-        ],
+        seeds = [SOL_POOL_SEED, mint_addr.key().as_ref()],
         bump,
     )]
     pub sol_pool: AccountInfo<'info>,
@@ -149,7 +155,7 @@ impl<'info> Buy<'info> {
                     mint: self.mint_addr.to_account_info(),
                 },
                 &[&[
-                    b"sol_pool",
+                    SOL_POOL_SEED,
                     &self.mint_addr.key().to_bytes(),
                     &[bump],
                 ]],
@@ -165,12 +171,12 @@ impl<'info> Buy<'info> {
         if self.bonding_curve.real_sol_reserves > self.global_configuration.bonding_curve_limitation
         {
             self.bonding_curve.complete = true;
-            emit!(BondingCurveCompleted {
-                mint_addr: self.mint_addr.key(),
-                final_sol_reserves: self.bonding_curve.real_sol_reserves,
-                final_token_reserves: self.bonding_curve.real_token_reserves,
-                timestamp: Clock::get()?.unix_timestamp,
-            });
+            // emit!(BondingCurveCompleted {
+            //     mint_addr: self.mint_addr.key(),
+            //     final_sol_reserves: self.bonding_curve.real_sol_reserves,
+            //     final_token_reserves: self.bonding_curve.real_token_reserves,
+            //     timestamp: Clock::get()?.unix_timestamp,
+            // });
         }
 
         emit!(BondingCurveBought {

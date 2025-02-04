@@ -1,18 +1,17 @@
+#![allow(unexpected_cfgs)]
+
 use anchor_lang::prelude::*;
 
 pub mod consts;
-pub mod events;
 pub mod instructions;
 pub mod states;
 pub mod utils;
 pub mod error;
 
-use crate::error::ErrorCode;
-
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("AM4QGGmJrbfMX5NbNuT1EQ4mArWgbk8Zn4BfSbLGc2YS");
+declare_id!("AkQWMDTiZbTbNTXhMFqxN9eoMrW3zE1biTCk2HE5Cmyb");
 
 #[program]
 pub mod token_2022_kashe {

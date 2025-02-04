@@ -6,26 +6,11 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-token_2022_kashe = "AM4QGGmJrbfMX5NbNuT1EQ4mArWgbk8Zn4BfSbLGc2YS"
+token_2022_kashe = "AkQWMDTiZbTbNTXhMFqxN9eoMrW3zE1biTCk2HE5Cmyb"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Devnet"
+cluster = "Mainnet"
 wallet = "~/.config/solana/id.json"
-
-[scripts]
-add-liquidity = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g add liquidity"
-airdrop = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g Airdrop to admin wallet"
-buy = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g buy"
-create-pool = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g create pool"
-is-initialized = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g Is initialized!"
-mint = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g token-mint"
-sell = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g sell"
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts -g "
-
-[test]
-startup_wait = 20000
-shutdown_wait = 2000
-upgradeable = false

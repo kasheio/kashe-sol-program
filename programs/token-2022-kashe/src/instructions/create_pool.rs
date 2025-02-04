@@ -1,6 +1,5 @@
 use anchor_lang::{
     prelude::*,
-    solana_program::system_instruction::{self},
 };
 use anchor_spl::{
     associated_token::AssociatedToken,
@@ -9,9 +8,9 @@ use anchor_spl::{
 };
 
 use crate::{
-    events::PoolCreated,
     states::{BondingCurve, InitializeConfiguration},
 };
+use crate::consts::SOL_POOL_SEED;
 
 #[derive(Accounts)]
 pub struct CreatePool<'info> {
@@ -42,7 +41,7 @@ pub struct CreatePool<'info> {
     #[account(
         mut,
         seeds = [
-            b"sol_pool", mint_addr.key().as_ref()
+            SOL_POOL_SEED, mint_addr.key().as_ref()
         ],
         bump,
     )]

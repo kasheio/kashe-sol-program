@@ -1,15 +1,14 @@
-use std::ops::{Div, Mul};
-const lamports_per_sol: u64 = 1_000_000_000;
+use anchor_lang::solana_program::native_token::LAMPORTS_PER_SOL;
 
 fn get_tokens_received(sol_amount: u64, sol_reserves: u64, token_reserves: u64) -> Result<u64, &'static str> {
     if sol_amount == 0 {
         return Ok(0);
     }
-    let virtual_and_real_sol_reserves = sol_reserves + 15*lamports_per_sol;
+    let virtual_and_real_sol_reserves = sol_reserves as u128 + (15 * LAMPORTS_PER_SOL) as u128;
     // Calculate the product of virtual reserves using u128 to avoid overflow
-    let n: u128 = (virtual_and_real_sol_reserves as u128) * (token_reserves as u128);
+    let n: u128 = virtual_and_real_sol_reserves * (token_reserves as u128);
     // Calculate the new virtual sol reserves after the purchase
-    let i: u128 = (virtual_and_real_sol_reserves as u128) + (sol_amount as u128);
+    let i: u128 = virtual_and_real_sol_reserves + (sol_amount as u128);
     // Calculate the new virtual token reserves after the purchase
     let r: u128 = n / i;
     // Calculate the amount of tokens to be purchased
@@ -31,7 +30,7 @@ pub fn get_sell_price(
     if token_amount == 0 {
         return Ok(0);
     }
-    let virtual_and_real_sol_reserves: u128 = sol_reserves as u128 + 15*lamports_per_sol as u128;
+    let virtual_and_real_sol_reserves: u128 = sol_reserves as u128 + (15 * LAMPORTS_PER_SOL) as u128;
     let n: u128 = virtual_and_real_sol_reserves * (token_reserves as u128);
     let d: u128 = token_reserves as u128 + token_amount as u128;
     let f: u128 = n / d;
