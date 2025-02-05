@@ -21,7 +21,7 @@ function checkBalances() {
     return __awaiter(this, void 0, void 0, function* () {
         // const connection = new Connection("https://api.devnet.solana.com", "confirmed");
         const connection = new web3_js_1.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c", "confirmed");
-        const kasheProdUints = bytes_1.bs58.decode("47rcUz6jVkkKFYAxbYkLLo4BQs4pSLnbQgT4R24dTia7Kj5bQpqeLTCaUpjTuJ7W3FuA1kT1Y26CgfX25i1852fi");
+        const kasheProdUints = bytes_1.bs58.decode("");
         const kasheProd = web3_js_1.Keypair.fromSecretKey(kasheProdUints);
         const idKey = web3_js_1.Keypair.fromSecretKey(new Uint8Array([109, 119, 128, 121, 165, 100, 12, 228, 105, 55, 176, 157, 122, 212, 52, 206, 85, 232, 60, 59, 217, 192, 27, 139, 213, 120, 148, 23, 203, 107, 140, 249, 170, 78, 108, 109, 55, 20, 56, 91, 99, 155, 22, 9, 75, 44, 198, 221, 113, 73, 176, 210, 134, 204, 224, 84, 94, 139, 191, 64, 51, 95, 125, 197]));
         const mykey = web3_js_1.Keypair.fromSecretKey(new Uint8Array(mekey_json_1.default));
