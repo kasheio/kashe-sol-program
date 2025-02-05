@@ -29,3 +29,5 @@ solana program deploy --buffer recovered-keypair-fail2.json /Users/gp/CascadePro
 Program Id: AkQWMDTiZbTbNTXhMFqxN9eoMrW3zE1biTCk2HE5Cmyb
 
 Signature: 2Dg4kogCTJWsDTL8qUJbGtebquSsj5EajMGEN3uws6RgmwFUrLERvJrfKV7F8LuB2Gpo9A5Dw4VTC5h7TbvabPuo
+
+solana program close AkQWMDTiZbTbNTXhMFqxN9eoMrW3zE1biTCk2HE5Cmyb --bypass-warning

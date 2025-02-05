@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 init-if-needed = false
 
-[programs.devnet]
+[programs.mainnet]
 token_2022_kashe = "Xr9FzcWQr2oVSiXXVuLz78eBZPu86xd2mNmES5Ub9Jm"
 
 [provider]
