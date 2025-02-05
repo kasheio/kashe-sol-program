@@ -11,7 +11,8 @@ import {
   PublicKey,
 } from "@solana/web3.js";
 
-import walletInfo from "/Users/gp/.config/solana/id.json";
+//import walletInfo from "/Users/gp/.config/solana/id.json";
+import walletInfo from "/home/kasheadmin/.config/solana/id.json";
 
 let program: Program<Token2022Kashe>;
 
@@ -101,7 +102,8 @@ async function main() {
     const wallet = new anchor.Wallet(walletkey);
     console.log("  Address:", wallet.publicKey.toBase58());
 
-    let cnx = new anchor.web3.Connection(process.env.ANCHOR_PROVIDER_URL);
+    // let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
+    let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
 
     const provider = new anchor.AnchorProvider(
       cnx,
