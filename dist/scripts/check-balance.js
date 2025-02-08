@@ -23,7 +23,8 @@ function checkBalances() {
         // const connection = new Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c", "confirmed");
         // const kasheProdUints = bs58.decode("");
         // const kasheProd = Keypair.fromSecretKey(kasheProdUints);
-        const idKey = web3_js_1.Keypair.fromSecretKey(new Uint8Array([109, 119, 128, 121, 165, 100, 12, 228, 105, 55, 176, 157, 122, 212, 52, 206, 85, 232, 60, 59, 217, 192, 27, 139, 213, 120, 148, 23, 203, 107, 140, 249, 170, 78, 108, 109, 55, 20, 56, 91, 99, 155, 22, 9, 75, 44, 198, 221, 113, 73, 176, 210, 134, 204, 224, 84, 94, 139, 191, 64, 51, 95, 125, 197]));
+        // const idKey = Keypair.fromSecretKey(new Uint8Array([109, 119, 128, 121, 165, 100, 12, 228, 105, 55, 176, 157, 122, 212, 52, 206, 85, 232, 60, 59, 217, 192, 27, 139, 213, 120, 148, 23, 203, 107, 140, 249, 170, 78, 108, 109, 55, 20, 56, 91, 99, 155, 22, 9, 75, 44, 198, 221, 113, 73, 176, 210, 134, 204, 224, 84, 94, 139, 191, 64, 51, 95, 125, 197]));
+        const idKey = web3_js_1.Keypair.fromSecretKey(new Uint8Array([3, 67, 94, 27, 176, 213, 189, 216, 223, 206, 94, 218, 145, 93, 185, 135, 187, 241, 193, 81, 217, 116, 43, 35, 240, 39, 226, 5, 245, 255, 68, 74, 167, 23, 49, 122, 31, 5, 56, 171, 105, 63, 103, 84, 20, 9, 238, 166, 176, 148, 198, 50, 165, 60, 161, 35, 237, 189, 15, 158, 254, 222, 232, 170]));
         const mykey = web3_js_1.Keypair.fromSecretKey(new Uint8Array(mekey_json_1.default));
         const payer = web3_js_1.Keypair.fromSecretKey(new Uint8Array(user1_json_1.default));
         const feeAccount = web3_js_1.Keypair.fromSecretKey(new Uint8Array(user2_json_1.default));

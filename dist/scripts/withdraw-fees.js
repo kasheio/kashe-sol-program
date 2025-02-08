@@ -46,17 +46,9 @@ function withdrawFees(connection, walletkey) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const [globalConfiguration] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("global_config")], program.programId);
-            // After a buy or sell transaction:
-            const feeAccountKey = (yield web3_js_1.PublicKey.findProgramAddress([Buffer.from("kashe_fee")], program.programId))[0];
-            const feeBalance = yield connection.getBalance(feeAccountKey);
-            console.log("Fee account balance:", feeBalance / anchor.web3.LAMPORTS_PER_SOL, "SOL");
-            // Also log the calculation of fees:
-            const swapAmount =  /* your swap amount */;
-            const swapFee = 200; // from your initialization
-            const calculatedFee = (swapAmount * swapFee) / 10000;
-            console.log("Calculated fee should be:", calculatedFee / anchor.web3.LAMPORTS_PER_SOL, "SOL");
+            const [feeAccount] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
             // Get the balance before withdrawal
-            const balanceBefore = yield connection.getBalance(feeAccountKey);
+            const balanceBefore = yield connection.getBalance(feeAccount);
             const receiverBalanceBefore = yield connection.getBalance(walletkey.publicKey);
             console.log("Fee account balance before withdrawal:", balanceBefore / anchor.web3.LAMPORTS_PER_SOL, "SOL");
             console.log("Receiver balance before withdrawal:", receiverBalanceBefore / anchor.web3.LAMPORTS_PER_SOL, "SOL");
@@ -67,7 +59,7 @@ function withdrawFees(connection, walletkey) {
             const txn = yield program.methods
                 .withdrawFees()
                 .accountsStrict({
-                feeAccountKey,
+                feeAccount,
                 receiver: walletkey.publicKey,
                 systemProgram: anchor.web3.SystemProgram.programId,
                 globalConfiguration: globalConfiguration
@@ -82,7 +74,7 @@ function withdrawFees(connection, walletkey) {
             yield connection.confirmTransaction(txn, 'confirmed');
             yield new Promise(resolve => setTimeout(resolve, 15000)); // 5 second delay
             // Get the balance after withdrawal
-            const balanceAfter = yield connection.getBalance(feeAccountKey);
+            const balanceAfter = yield connection.getBalance(feeAccount);
             const receiverBalanceAfter = yield connection.getBalance(walletkey.publicKey);
             console.log("Fee account balance after withdrawal:", balanceAfter / anchor.web3.LAMPORTS_PER_SOL, "SOL");
             console.log("Receiver balance after withdrawal:", receiverBalanceAfter / anchor.web3.LAMPORTS_PER_SOL, "SOL");
@@ -106,8 +98,8 @@ function main() {
         const walletkey = web3_js_1.Keypair.fromSecretKey(walletInfoArray);
         const wallet = new anchor.Wallet(walletkey);
         console.log("  Address:", wallet.publicKey.toBase58());
-        let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
-        // let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
+        // let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
+        let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
         const provider = new anchor.AnchorProvider(cnx, wallet, { commitment: 'processed' });
         anchor.setProvider(provider);
         let anchor_provider = anchor.getProvider();

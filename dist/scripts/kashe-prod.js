@@ -116,8 +116,8 @@ function main() {
         const walletkey = web3_js_1.Keypair.fromSecretKey(walletInfoArray);
         const wallet = new anchor.Wallet(walletkey);
         console.log("  Address:", wallet.publicKey.toBase58());
-        let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
-        // let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
+        // let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
+        let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
         const provider = new anchor.AnchorProvider(cnx, wallet, { commitment: 'processed' });
         anchor.setProvider(provider);
         let anchor_provider = anchor.getProvider();
