@@ -40,8 +40,8 @@ const anchor = __importStar(require("@coral-xyz/anchor"));
 const anchor_1 = require("@coral-xyz/anchor");
 dotenv.config();
 const web3_js_1 = require("@solana/web3.js");
-//import walletInfo from "/Users/gp/.config/solana/id.json";
-const id_json_1 = __importDefault(require("/home/kasheadmin/.config/solana/id.json"));
+const id_json_1 = __importDefault(require("/Users/gp/.config/solana/id.json"));
+// import walletInfo from "/home/kasheadmin/.config/solana/id.json";
 let program;
 function initialize(connection, walletkey) {
     return __awaiter(this, void 0, void 0, function* () {
