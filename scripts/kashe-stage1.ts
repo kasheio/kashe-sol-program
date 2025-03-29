@@ -2,7 +2,6 @@ import * as dotenv from "dotenv";
 import * as anchor from "@coral-xyz/anchor";
 import { BN, Program } from "@coral-xyz/anchor";
 import { Token2022Kashe } from "../target/types/token_2022_kashe";
-const web3_js_1 = require("@solana/web3.js");
 dotenv.config();
 
 import {
@@ -12,7 +11,7 @@ import {
   PublicKey,
 } from "@solana/web3.js";
 
-import walletInfo from "/Users/gp/.config/solana/id.json";
+import walletInfo from "/Users/gp/.config/solana/id-devnet.json";
 
 let program: Program<Token2022Kashe>;
 
@@ -97,11 +96,8 @@ async function initialize(connection: Connection, walletkey: Keypair) {
 }
 
 async function main() {
-    // const walletInfoArray = new Uint8Array(walletInfo);
-    // const walletkey = Keypair.fromSecretKey(walletInfoArray);
     const walletInfoArray = new Uint8Array(walletInfo);
-    const walletkey = web3_js_1.Keypair.fromSecretKey(walletInfoArray);
-
+    const walletkey = Keypair.fromSecretKey(walletInfoArray);
     const wallet = new anchor.Wallet(walletkey);
     console.log("  Address:", wallet.publicKey.toBase58());
 
@@ -118,9 +114,6 @@ async function main() {
     let connection: Connection = anchor_provider.connection;
 
     program = anchor.workspace.Token2022Kashe as Program<Token2022Kashe>;
-
-    const [feeAccount] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
-        console.log(`Fee account: ${feeAccount.toBase58()}`);
 
     await initialize(connection, walletkey);
    

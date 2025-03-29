@@ -40,8 +40,7 @@ const anchor = __importStar(require("@coral-xyz/anchor"));
 const anchor_1 = require("@coral-xyz/anchor");
 dotenv.config();
 const web3_js_1 = require("@solana/web3.js");
-//import walletInfo from "/Users/gp/.config/solana/id.json";
-const id_json_1 = __importDefault(require("/home/kasheadmin/.config/solana/id.json"));
+const id_devnet_json_1 = __importDefault(require("/Users/gp/.config/solana/id-devnet.json"));
 let program;
 function initialize(connection, walletkey) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -112,12 +111,11 @@ function initialize(connection, walletkey) {
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        const walletInfoArray = new Uint8Array(id_json_1.default);
+        const walletInfoArray = new Uint8Array(id_devnet_json_1.default);
         const walletkey = web3_js_1.Keypair.fromSecretKey(walletInfoArray);
         const wallet = new anchor.Wallet(walletkey);
         console.log("  Address:", wallet.publicKey.toBase58());
-        // let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
-        let cnx = new anchor.web3.Connection("https://fittest-hardworking-asphalt.solana-mainnet.quiknode.pro/5a7cd31f4e42713ec7866178f5447cb665aa662c");
+        let cnx = new anchor.web3.Connection(process.env.ANCHOR_PROVIDER_URL);
         const provider = new anchor.AnchorProvider(cnx, wallet, { commitment: 'processed' });
         anchor.setProvider(provider);
         let anchor_provider = anchor.getProvider();
@@ -128,4 +126,4 @@ function main() {
     });
 }
 main();
-//# sourceMappingURL=kashe-prod.js.map
+//# sourceMappingURL=kashe-stage1.js.map

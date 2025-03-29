@@ -11,7 +11,7 @@ pub mod error;
 use crate::consts::*;
 use crate::instructions::*;
 
-declare_id!("ARtRTjoKQpaZBTyqXBEMkUwb1EWrqoBKaF9TzjLH3NdQ");
+declare_id!("8x1nUf7tuDe1c8jh51ptBMt5YQENk5ddpvqQVekA6afW");
 
 #[program]
 pub mod token_2022_kashe {

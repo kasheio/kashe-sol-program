@@ -6,7 +6,10 @@ resolution = true
 skip-lint = false
 
 [programs.mainnet]
-token_2022_kashe = "ARtRTjoKQpaZBTyqXBEMkUwb1EWrqoBKaF9TzjLH3NdQ"
+token_2022_kashe = "8x1nUf7tuDe1c8jh51ptBMt5YQENk5ddpvqQVekA6afW"
+
+[registry]
+url = "https://api.apr.dev"
 
 [provider]
 cluster = "Mainnet"

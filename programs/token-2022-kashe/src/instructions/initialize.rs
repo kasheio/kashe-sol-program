@@ -4,6 +4,7 @@ use crate::{
     consts::InitializeConfigurationParam,
     states::InitializeConfiguration,
 };
+use crate::consts::FEE_SEED;
 
 #[derive(Accounts)]
 #[instruction(param: InitializeConfigurationParam)]
@@ -17,7 +18,12 @@ pub struct Initialize<'info> {
     )]
     pub global_configuration: Account<'info, InitializeConfiguration>,
 
-    /// CHECK:
+    /// CHECK: This is the fee account PDA that collects protocol fees
+    #[account(
+        mut,
+        seeds = [FEE_SEED],
+        bump,
+    )]
     pub fee_account: AccountInfo<'info>,
 
     #[account(mut)]

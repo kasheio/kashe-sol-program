@@ -14,6 +14,7 @@ use crate::{
 use crate::error::ErrorCode;
 use crate::consts::SOL_POOL_SEED;
 use crate::consts::BPS_DECIMALS;
+use crate::consts::FEE_SEED;
 
 #[derive(Accounts)]
 #[instruction(in_amount: u64)]
@@ -63,7 +64,11 @@ pub struct Sell<'info> {
     pub token_pool: Box<InterfaceAccount<'info, TokenAccount>>,
    
     /// CHECK:
-    #[account(mut)]
+    #[account(
+        mut,
+        seeds = [FEE_SEED],
+        bump,
+    )]
     pub fee_account: AccountInfo<'info>,
 
     #[account(mut)]
