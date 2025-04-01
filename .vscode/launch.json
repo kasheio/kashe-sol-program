@@ -59,6 +59,7 @@
             "runtimeArgs": [
                 "--nolazy"
             ],
+            "runtimeExecutable": "/opt/homebrew/bin/node",
             "program": "${workspaceFolder}/scripts/check-balance.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "preLaunchTask": "tsc: build - tsconfig.json",

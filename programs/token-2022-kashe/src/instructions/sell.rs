@@ -16,6 +16,18 @@ use crate::consts::SOL_POOL_SEED;
 use crate::consts::BPS_DECIMALS;
 use crate::consts::FEE_SEED;
 
+#[event]
+pub struct BondingCurveSold {
+    pub mint_addr: Pubkey,
+    pub seller: Pubkey,
+    pub token_amount: u64,
+    pub sol_amount: u64,
+    pub sol_reserves: u64,
+    pub token_reserves: u64,
+    pub fees_paid: u64,
+    pub timestamp: i64,
+}
+
 #[derive(Accounts)]
 #[instruction(in_amount: u64)]
 pub struct Sell<'info> {
@@ -82,7 +94,7 @@ impl<'info> Sell<'info> {
     pub fn process(&mut self, in_amount: u64, bump: u8) -> Result<()> {
         require_eq!(self.bonding_curve.complete, false);
 
-        let estimated_out_token = calc_swap_quote(
+        let estimated_sol_out = calc_swap_quote(
             in_amount,
             self.bonding_curve.real_sol_reserves,
             self.bonding_curve.real_token_reserves,
@@ -105,10 +117,10 @@ impl<'info> Sell<'info> {
         // msg!(
         //     "Sell Token {} token => {} sol ",
         //     in_amount,
-        //     estimated_out_token
+        //     estimated_sol_out
         // );
 
-        let fees = estimated_out_token
+        let fees = estimated_sol_out
             .checked_mul(self.global_configuration.swap_fee as u64)
             .ok_or(ErrorCode::MathOverflow)?
             .checked_div(BPS_DECIMALS)
@@ -119,7 +131,7 @@ impl<'info> Sell<'info> {
         //     fees
         // );
 
-        let sol_out = estimated_out_token
+        let sol_out = estimated_sol_out
             .checked_sub(fees)
             .ok_or(ErrorCode::MathOverflow)?;
             
@@ -167,19 +179,19 @@ impl<'info> Sell<'info> {
             ]],
         )?;
 
-        self.bonding_curve.real_sol_reserves -= estimated_out_token;
+        self.bonding_curve.real_sol_reserves -= estimated_sol_out;
         self.bonding_curve.real_token_reserves += in_amount;
 
-        // emit!(BondingCurveSold {
-        //     mint_addr: self.mint_addr.key(),
-        //     seller: self.payer.key(),
-        //     token_amount: in_amount,
-        //     sol_amount: sol_out,
-        //     sol_reserves: self.bonding_curve.real_sol_reserves,
-        //     token_reserves: self.bonding_curve.real_token_reserves,
-        //     fees_paid: fees,
-        //     timestamp: Clock::get()?.unix_timestamp,
-        // });
+        emit!(BondingCurveSold {
+            mint_addr: self.mint_addr.key(),
+            seller: self.payer.key(),
+            token_amount: in_amount,
+            sol_amount: sol_out,
+            sol_reserves: self.bonding_curve.real_sol_reserves,
+            token_reserves: self.bonding_curve.real_token_reserves,
+            fees_paid: fees,
+            timestamp: Clock::get()?.unix_timestamp,
+        });
 
         Ok(())
     }

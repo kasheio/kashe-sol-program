@@ -121,7 +121,7 @@ impl<'info> Buy<'info> {
         let transfer_instruction = system_instruction::transfer(
             &self.payer.to_account_info().key(),
             &self.sol_pool.key().clone(),
-            total_amount.checked_sub(fees).ok_or(ErrorCode::MathOverflow)?,
+            pool_amount
         );
 
         anchor_lang::solana_program::program::invoke(

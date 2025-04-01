@@ -53,10 +53,10 @@ impl<'info> WithdrawFromBondingCurve<'info> {
         require!(self.bonding_curve.complete, ErrorCode::BondingCurveNotComplete);
         require!(self.receiver.key() == self.bonding_curve.creator, ErrorCode::UnauthorizedWithdraw);
 
-        // msg!("Withdraw: {}, {}", 
-        //     self.bonding_curve.real_token_reserves,
-        //     self.bonding_curve.real_sol_reserves
-        // );
+        msg!("Withdraw: {}, {}", 
+            self.bonding_curve.real_token_reserves,
+            self.bonding_curve.real_sol_reserves
+        );
 
         // Transfer all SOL
         let transfer_instruction = system_instruction::transfer(

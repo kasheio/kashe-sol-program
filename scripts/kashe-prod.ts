@@ -2,6 +2,8 @@ import * as dotenv from "dotenv";
 import * as anchor from "@coral-xyz/anchor";
 import { BN, Program } from "@coral-xyz/anchor";
 import { Token2022Kashe } from "../target/types/token_2022_kashe";
+const web3_js_1 = require("@solana/web3.js");
+
 dotenv.config();
 
 import {
@@ -116,6 +118,9 @@ async function main() {
     let connection: Connection = anchor_provider.connection;
 
     program = anchor.workspace.Token2022Kashe as Program<Token2022Kashe>;
+
+    const [feeAccount] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
+        console.log(`Fee account: ${feeAccount.toBase58()}`);
 
     await initialize(connection, walletkey);
    
