@@ -38,16 +38,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const anchor = __importStar(require("@coral-xyz/anchor"));
 const anchor_1 = require("@coral-xyz/anchor");
-dotenv.config();
 const web3_js_1 = require("@solana/web3.js");
+dotenv.config();
+const web3_js_2 = require("@solana/web3.js");
 //import walletInfo from "/Users/gp/.config/solana/id.json";
 const id_json_1 = __importDefault(require("/home/kasheadmin/.config/solana/id.json"));
 let program;
 function initialize(connection, walletkey) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const [globalConfiguration] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("global_config")], program.programId);
-            const [feeAccount] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
+            const [globalConfiguration] = web3_js_2.PublicKey.findProgramAddressSync([Buffer.from("global_config")], program.programId);
+            const [feeAccount] = web3_js_2.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
             // Check if the account already exists
             const accountInfo = yield connection.getAccountInfo(globalConfiguration);
             if (accountInfo !== null) {
@@ -56,7 +57,7 @@ function initialize(connection, walletkey) {
             }
             const initializeArgu = {
                 swapFee: new anchor_1.BN(200),
-                bondingCurveLimitation: new anchor_1.BN(40 * web3_js_1.LAMPORTS_PER_SOL),
+                bondingCurveLimitation: new anchor_1.BN(40 * web3_js_2.LAMPORTS_PER_SOL),
                 bondingCurveSlope: new anchor_1.BN(190 * 1000000),
                 authority: walletkey.publicKey
             };
@@ -113,7 +114,7 @@ function initialize(connection, walletkey) {
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const walletInfoArray = new Uint8Array(id_json_1.default);
-        const walletkey = web3_js_1.Keypair.fromSecretKey(walletInfoArray);
+        const walletkey = web3_js_2.Keypair.fromSecretKey(walletInfoArray);
         const wallet = new anchor.Wallet(walletkey);
         console.log("  Address:", wallet.publicKey.toBase58());
         // let cnx = new anchor.web3.Connection("https://clean-withered-replica.solana-devnet.quiknode.pro/");
@@ -123,6 +124,8 @@ function main() {
         let anchor_provider = anchor.getProvider();
         let connection = anchor_provider.connection;
         program = anchor.workspace.Token2022Kashe;
+        const [feeAccount] = web3_js_1.PublicKey.findProgramAddressSync([Buffer.from("kashe_fee")], program.programId);
+        console.log(`Fee account: ${feeAccount.toBase58()}`);
         yield initialize(connection, walletkey);
         console.log('done');
     });

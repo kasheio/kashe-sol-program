@@ -229,6 +229,7 @@
             "runtimeArgs": [
                 "--nolazy"
             ],
+            "runtimeExecutable": "/opt/homebrew/bin/node",
             "program": "${workspaceFolder}/scripts/withdraw-fees.ts",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"],
             "preLaunchTask": "tsc: build - tsconfig.json",
