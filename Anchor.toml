@@ -6,11 +6,11 @@ resolution = true
 skip-lint = false
 
 [programs.mainnet]
-token_2022_kashe = "97emQnUDtp5uoCjyCQMZpfhpRhffHHymAgVBnLreJDkF"
+token_2022_kashe = "A75Rd9gwDREAjGUCYN3cpPM9faLbmm7iWu6trMP84URk"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Mainnet"
+cluster = "mainnet"
 wallet = "~/.config/solana/id.json"

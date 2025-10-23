@@ -1,0 +1,14 @@
+{
+    "name": "Kashe",
+    "symbol": "KASHE",
+    "description": "Tokenizing Value",
+    "image": "https://media.kashe.io/kashe.png",
+    "properties": {
+        "files": [
+            {
+                "uri": "https://media.kashe.io/kashe.png",
+                "type": "image/png"
+            }
+        ]
+    }
+  }
